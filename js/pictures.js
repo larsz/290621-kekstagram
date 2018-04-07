@@ -93,3 +93,36 @@ var generateData = function (number) {
 
 var generatedPhotos = generateData(PhotoConsts.QUANTITY);
 
+// DOM elements
+var photoTemplateElement = document.querySelector('#picture');
+var photoContainerElement = document.querySelector('.pictures');
+
+var renderPhoto = function (photo) {
+  var clonedPhoto = photoTemplateElement.content.cloneNode(true);
+  var clonedPhotoImg = clonedPhoto.querySelector('.picture__img');
+  var clonedPhotoLikes = clonedPhoto.querySelector('.picture__stat--likes');
+  var clonedPhotoComments = clonedPhoto.querySelector('.picture__stat--comments');
+
+  clonedPhotoImg.src = photo.url;
+  clonedPhotoLikes.textContent = photo.likes;
+  clonedPhotoComments.textContent = photo.comments.length;
+
+  return clonedPhoto;
+};
+
+var saveRenderedPhotos = function () {
+  var photosFragment = document.createDocumentFragment();
+  generatedPhotos.forEach(function (photo) {
+    photosFragment.appendChild(renderPhoto(photo));
+  });
+
+  return photosFragment;
+};
+
+var renderedPhotos = saveRenderedPhotos();
+
+var showPhotos = function () {
+  photoContainerElement.appendChild(renderedPhotos);
+};
+
+showPhotos();
