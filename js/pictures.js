@@ -26,7 +26,8 @@ var PhotoConsts = {
     MAX: 200
   },
   PATH: 'photos/',
-  QUANTITY: 25
+  QUANTITY: 25,
+  FEATURED_PHOTO_DEFAULT_CLASS: 'hidden'
 };
 
 // common functions
@@ -126,3 +127,24 @@ var showPhotos = function () {
 };
 
 showPhotos();
+
+var featuredPhotoElement = document.querySelector('.big-picture');
+
+var renderFeaturedPhoto = function (featuredPhoto) {
+  var featuredPhotoImg = featuredPhotoElement.querySelector('.big-picture__img img');
+  var featuredPhotoLikes = featuredPhotoElement.querySelector('.likes-count');
+  var featuredPhotoComments = featuredPhotoElement.querySelector('.comments-count');
+
+  featuredPhotoImg.src = featuredPhoto.url;
+  featuredPhotoLikes.textContent = featuredPhoto.likes;
+  featuredPhotoComments.textContent = featuredPhoto.comments.length;
+
+  return featuredPhoto;
+};
+
+var initFeaturedPhoto = function () {
+  renderFeaturedPhoto(generatedPhotos[0]);
+  featuredPhotoElement.classList.remove(PhotoConsts.FEATURED_PHOTO_DEFAULT_CLASS);
+};
+
+initFeaturedPhoto();
