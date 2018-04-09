@@ -129,21 +129,22 @@ var insertFragment = function (parent, child) {
   parent.appendChild(child);
 };
 
+var removeChilds = function (element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+};
+
+var hideElement = function (element) {
+  element.classList.add('visually-hidden');
+};
+
 insertFragment(photoContainerElement, renderedPhotos);
 
 var featuredPhotoElement = document.querySelector('.big-picture');
 var featuredPhotoCommentsElement = featuredPhotoElement.querySelector('.social__comment-count');
 var featuredPhotoLoadMoreElement = featuredPhotoElement.querySelector('.social__comment-loadmore');
 var commentsTemplateElement = featuredPhotoElement.querySelector('.social__comments');
-
-var hideDefaultSettings = function () {
-  while (commentsTemplateElement.firstChild) {
-    commentsTemplateElement.removeChild(commentsTemplateElement.firstChild);
-  }
-
-  featuredPhotoCommentsElement.classList.add('visually-hidden');
-  featuredPhotoLoadMoreElement.classList.add('visually-hidden');
-};
 
 var renderComments = function (data) {
   var comments = document.createDocumentFragment();
@@ -166,15 +167,17 @@ var renderComments = function (data) {
 
 var renderFeaturedPhoto = function (featuredPhoto) {
   var img = featuredPhotoElement.querySelector('.big-picture__img img');
+  var description = featuredPhotoElement.querySelector('.social__caption');
   var likesCount = featuredPhotoElement.querySelector('.likes-count');
   var commentsCount = featuredPhotoElement.querySelector('.comments-count');
   var comments = renderComments(featuredPhoto.comments);
 
   img.src = featuredPhoto.url;
+  description.textContent = featuredPhoto.description;
   likesCount.textContent = featuredPhoto.likes;
   commentsCount.textContent = featuredPhoto.comments.length;
 
-  hideDefaultSettings();
+  removeChilds(commentsTemplateElement);
   insertFragment(commentsTemplateElement, comments);
 
   return featuredPhoto;
@@ -184,6 +187,8 @@ var initFeaturedPhoto = function () {
   var randomFeaturedPhoto = getRandomElement(generatedPhotos);
   renderFeaturedPhoto(randomFeaturedPhoto);
 
+  hideElement(featuredPhotoCommentsElement);
+  hideElement(featuredPhotoLoadMoreElement);
   featuredPhotoElement.classList.remove(PhotoConsts.FEATURED_PHOTO_DEFAULT_CLASS);
 };
 
