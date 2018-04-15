@@ -915,6 +915,7 @@ main {
           flex-direction: column;
 
   min-width: 600px;
+  max-width: 600px;
 
   color: #000000;
   font-family: "Open Sans", "Arial", sans-serif;
