@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Eugen Lobicov](https://up.htmlacademy.ru/javascript/13/user/290621).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Коршунов](https://htmlacademy.ru/profile/bekobou).
 
 ---
 
