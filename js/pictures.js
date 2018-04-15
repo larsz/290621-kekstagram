@@ -264,6 +264,7 @@ var thmbsListClickHandler = function (evt) {
 photosListElement.addEventListener('click', thmbsListClickHandler, true);
 
 /* Effects slider settings */
+var sliderElement = uploadedFileEditFormElement.querySelector('.img-upload__scale');
 var sliderPinElement = uploadedFileEditFormElement.querySelector('.scale__pin');
 var effectsElement = uploadedFileEditFormElement.querySelector('.effects');
 var effectInputElement = uploadedFileEditFormElement.querySelectorAll('.effects__radio');
@@ -299,26 +300,27 @@ effectsElement.addEventListener('change', function () {
 
 var applyFilter = function () {
   var selectedFilter = getCurrentFilter();
-  var selectedIntensity = getIntensityLevel();
-
   var appliedEffectClassName = PhotoConsts.EFFECTS.PREFIX_CLASS + selectedFilter;
   previewElement.className = PhotoConsts.PREVIEW_CLASS + ' ' + appliedEffectClassName;
 
-  var filters = {
-    none: 'none',
-    chrome: 'grayscale(' + selectedIntensity + ')',
-    sepia: 'sepia(' + selectedIntensity + ')',
-    marvin: 'invert(' + Math.round(selectedIntensity * 100) + '%)',
-    phobos: 'blur(' + selectedIntensity * 3 + 'px)',
-    heat: 'brightness(' + selectedIntensity * 3 + ')'
-  };
-
   if (selectedFilter === PhotoConsts.EFFECTS.DEFAULT) {
     previewElement.removeAttribute('style');
+    sliderElement.classList.add('hidden');
   } else {
+    sliderElement.classList.remove('hidden');
+    var selectedIntensity = getIntensityLevel();
+
+    var filters = {
+      none: 'none',
+      chrome: 'grayscale(' + selectedIntensity + ')',
+      sepia: 'sepia(' + selectedIntensity + ')',
+      marvin: 'invert(' + Math.round(selectedIntensity * 100) + '%)',
+      phobos: 'blur(' + selectedIntensity * 3 + 'px)',
+      heat: 'brightness(' + selectedIntensity * 3 + ')'
+    };
+
     previewElement.style.filter = filters[selectedFilter];
   }
-
 };
 
 var uploadFileChangeHandler = function () {
