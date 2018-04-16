@@ -377,9 +377,6 @@ var closePopup = function () {
   }
 };
 
-
-openEditForm();
-
 /* Resize control */
 var resizeControl = uploadFormElement.querySelector('.img-upload__resize');
 var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
