@@ -378,7 +378,6 @@ var closePopup = function () {
 };
 
 /* Resize control */
-var resizeControl = uploadFormElement.querySelector('.img-upload__resize');
 var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
 var resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
 var resizeValueElement = uploadFormElement.querySelector('.resize__control--value');
@@ -393,11 +392,6 @@ var resizePlusClickHandler = function () {
   var resizeVal = Math.min(Resize.MAX, Math.max(Resize.MIN, parseInt(resizeValueElement.value, 10) + Resize.STEP));
   resizeValueElement.value = resizeVal + '%';
   previewElement.style.transform = 'scale(' + resizeVal / 100 + ')';
-
-  /* temporary style fix */
-  if (resizeVal === Resize.DEFAULT) {
-    resizeControl.style.zIndex = '1';
-  }
 };
 
 resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
