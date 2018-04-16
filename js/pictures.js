@@ -46,6 +46,13 @@ var KeyCode = {
   ENTER: 13
 };
 
+var Resize = {
+  MIN: 25,
+  MAX: 100,
+  STEP: 25,
+  DEFAULT: 100
+};
+
 // DOM elements
 var photoTemplateElement = document.querySelector('#picture');
 var photosListElement = document.querySelector('.pictures');
@@ -369,3 +376,32 @@ var closePopup = function () {
     closeEditForm();
   }
 };
+
+
+openEditForm();
+
+/* Resize control */
+var resizeControl = uploadFormElement.querySelector('.img-upload__resize');
+var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
+var resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
+var resizeValueElement = uploadFormElement.querySelector('.resize__control--value');
+
+var resizeMinusClickHandler = function () {
+  var resizeVal = Math.min(Resize.MAX, Math.max(Resize.MIN, parseInt(resizeValueElement.value, 10) - Resize.STEP));
+  resizeValueElement.value = resizeVal + '%';
+  previewElement.style.transform = 'scale(' + resizeVal / 100 + ')';
+};
+
+var resizePlusClickHandler = function () {
+  var resizeVal = Math.min(Resize.MAX, Math.max(Resize.MIN, parseInt(resizeValueElement.value, 10) + Resize.STEP));
+  resizeValueElement.value = resizeVal + '%';
+  previewElement.style.transform = 'scale(' + resizeVal / 100 + ')';
+
+  /* temporary style fix */
+  if (resizeVal === Resize.DEFAULT) {
+    resizeControl.style.zIndex = '1';
+  }
+};
+
+resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
+resizePlusElement.addEventListener('click', resizePlusClickHandler);
