@@ -84,10 +84,6 @@ var getRandomElement = function (arr) {
   return arr[getRandomIndex(arr)];
 };
 
-var insertFragment = function (parent, child) {
-  parent.appendChild(child);
-};
-
 var removeChilds = function (element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
@@ -147,8 +143,7 @@ var generateData = function (number) {
       'url': getPhotoUrl(i),
       'likes': getPhotoLikes(),
       'comments': getPhotoComments(),
-      'description': getPhotoDescription(),
-      'photoID': i
+      'description': getPhotoDescription()
     });
   }
   return data;
@@ -157,38 +152,41 @@ var generateData = function (number) {
 var generatedPhotos = generateData(PhotoConsts.QUANTITY);
 
 // Render thumbnails
-var renderPhoto = function (photo) {
+var createPhoto = function (photo) {
   var clonedPhotoTemplate = photoTemplateElement.content.cloneNode(true);
   var clonedPhoto = clonedPhotoTemplate.querySelector('.picture__link');
   var clonedPhotoImg = clonedPhoto.querySelector('.picture__img');
   var clonedPhotoLikes = clonedPhoto.querySelector('.picture__stat--likes');
   var clonedPhotoComments = clonedPhoto.querySelector('.picture__stat--comments');
 
-  clonedPhoto.dataset.id = photo.photoID;
   clonedPhotoImg.src = photo.url;
   clonedPhotoLikes.textContent = photo.likes;
   clonedPhotoComments.textContent = photo.comments.length;
+
+  clonedPhoto.addEventListener('click', function () {
+    showFeaturedPhoto(photo);
+  });
 
   return clonedPhoto;
 };
 
 // Save thumbnails fragment
-var saveRenderedPhotos = function () {
-  var photosFragment = document.createDocumentFragment();
+var renderPhotos = function () {
+  var photos = document.createDocumentFragment();
   generatedPhotos.forEach(function (photo) {
-    photosFragment.appendChild(renderPhoto(photo));
+    photos.appendChild(createPhoto(photo));
   });
 
-  return photosFragment;
+  return photos;
 };
 
-var renderedPhotos = saveRenderedPhotos();
+var renderedPhotos = renderPhotos();
 
-var showThumbnails = function () {
-  insertFragment(photosListElement, renderedPhotos);
+var showThumbnails = function (fragment) {
+  photosListElement.appendChild(fragment);
 };
 
-showThumbnails();
+showThumbnails(renderedPhotos);
 
 var renderComments = function (data) {
   var comments = document.createDocumentFragment();
@@ -223,7 +221,7 @@ var renderFeaturedPhoto = function (featuredPhoto) {
   commentsCount.textContent = featuredPhoto.comments.length;
 
   removeChilds(commentsTemplateElement);
-  insertFragment(commentsTemplateElement, comments);
+  commentsTemplateElement.appendChild(comments);
 
   return featuredPhoto;
 };
@@ -254,21 +252,6 @@ var closeFeaturedPhoto = function () {
 var popupCloseClickHandler = function () {
   closeFeaturedPhoto();
 };
-
-// Handle click on thumb to show big photo
-var thmbsListClickHandler = function (evt) {
-  var clickedElement = evt.target;
-  if (!clickedElement.dataset.id) {
-    clickedElement = clickedElement.parentNode;
-  }
-
-  var clickedIndex = clickedElement.dataset.id;
-  if (clickedIndex) {
-    showFeaturedPhoto(generatedPhotos[clickedIndex]);
-  }
-};
-
-photosListElement.addEventListener('click', thmbsListClickHandler, true);
 
 /* Effects slider settings */
 var sliderElement = uploadedFileEditFormElement.querySelector('.img-upload__scale');
@@ -396,3 +379,4 @@ var resizePlusClickHandler = function () {
 
 resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
 resizePlusElement.addEventListener('click', resizePlusClickHandler);
+
