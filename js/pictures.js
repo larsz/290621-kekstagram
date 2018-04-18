@@ -53,6 +53,12 @@ var Resize = {
   DEFAULT: 100
 };
 
+var Hashtag = {
+  MIN: 2,
+  MAX: 20,
+  LIMIT: 5
+};
+
 // DOM elements
 var photoTemplateElement = document.querySelector('#picture');
 var photosListElement = document.querySelector('.pictures');
@@ -66,6 +72,7 @@ var featuredPhotoCloseElement = featuredPhotoElement.querySelector('.big-picture
 
 /* Upload photo & edit form controls */
 var uploadFormElement = document.querySelector('.img-upload__form');
+var uploadFormSubmitElement = document.querySelector('.img-upload__submit');
 var uploadFileElement = uploadFormElement.querySelector('#upload-file');
 var uploadedFileEditFormElement = uploadFormElement.querySelector('.img-upload__overlay');
 var uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
@@ -380,3 +387,143 @@ var resizePlusClickHandler = function () {
 resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
 resizePlusElement.addEventListener('click', resizePlusClickHandler);
 
+/* Hashtag validation */
+/* Hashtags & form validation */
+var hashTagsInputElement = uploadFormElement.querySelector('.text__hashtags');
+
+/*
+var isValidHashTag = function (data) {
+  var hashRegExp = /^#[\w+]{1,20}$/;
+  return hashRegExp.test(data);
+};
+*/
+
+var showHashtagsValidationError = function (message) {
+  hashTagsInputElement.setCustomValidity(message);
+  hashTagsInputElement.style.borderColor = 'red';
+  console.log('showHashtagsValidationError');
+};
+
+var clearHashtagsValidationError = function () {
+  hashTagsInputElement.setCustomValidity('');
+  hashTagsInputElement.style.borderColor = 'initial';
+};
+
+
+var checkHashtagsValidity = function () {
+  var data = hashTagsInputElement.value.toLowerCase();
+  var hashtags = data.split(' ');
+  var validHashTags = [];
+  var isValid = false;
+
+  /*
+  if (data === '') {
+    console.log('no data');
+    console.log(data);
+    //clearHashtagsValidationError();
+    return true;
+    //isValid = true;
+  }
+  */
+  /*
+  console.log(hashTagsInputElement.value);
+  console.log(data);
+  console.log(hashtags);
+
+  console.log(data.indexOf('#'));
+  console.log(data.indexOf('#') !== 0);
+  console.log(hashTagsInputElement);
+  hashTagsInputElement.setCustomValidity('Хэш-теги должны начинаться с символа #');
+  */
+
+  console.log('hashtag', hashTagsInputElement.value);
+  console.log('hashtag2', hashTagsInputElement.value.toLowerCase());
+
+  if (hashTagsInputElement.value.indexOf('#') !== 0) {
+    console.log('Хэш-теги должны начинаться с символа #');
+    hashTagsInputElement.setCustomValidity('Хэш-теги должны начинаться с символа #');
+  }
+
+  /*
+  hashtags.forEach(function (hashtag, index) {
+
+    console.log('index', index);
+    console.log('hashtag', hashtag.length);
+
+    if (hashtag.indexOf('#') !== 0 && hashtag.length > 0) {
+      console.log('invalid ', hashtag);
+      //showHashtagsValidationError('Хэш-теги должны начинаться с символа #');
+      hashTagsInputElement.setCustomValidity('Хэш-теги должны начинаться с символа #');
+      hashTagsInputElement.style.borderColor = 'orange';
+    } else if (hashtag.length > Hashtag.MAX) {
+      console.log('invalid ', hashtag);
+      notification += 'Максимальная длина хэш-тега - ' + Hashtag.MAX + ' символов. ';
+    }
+  });
+  */
+  /*
+  for (var i = 0; i < hashtags.length; i++) {
+    console.log(hashtags[i]);
+
+    if (hashtags[i].indexOf('#') !== 0) {
+      hashTagsInputElement.setCustomValidity('Хэш-теги должны начинаться с символа #');
+      hashTagsInputElement.style.borderColor = 'orange';
+    }
+
+  };
+  */
+
+
+  /*
+  hashTagsInputElement.addEventListener('focusin', function () {
+    hashTagsInputElement.setCustomValidity('');
+    hashTagsInputElement.style.borderColor = 'initial';
+  });
+
+  console.log(isValid);
+  return isValid;
+  */
+
+
+
+
+
+
+};
+
+var uploadFormSubmitHandler = function (evt) {
+  var isValidTags = checkHashtagsValidity();
+  evt.preventDefault();
+  /*
+  if (!isValidTags) {
+    evt.preventDefault();
+  }
+  */
+ //console.log('isValidTags ', isValidTags);
+};
+
+
+//uploadFormElement.addEventListener('submit', uploadFormSubmitHandler);
+uploadFormSubmitElement.addEventListener('click', uploadFormSubmitHandler);
+
+//hashTagsInputElement.addEventListener('invalid', highlightError);
+//hashTagsInputElement.addEventListener('input', checkHashtagsValidity);
+
+/*
+hashTagsInputElement.addEventListener('focusin', function () {
+  document.removeEventListener('keydown', popupEscClickHandler);
+});
+
+hashTagsInputElement.addEventListener('focusout', function () {
+  document.addEventListener('keydown', popupEscClickHandler);
+});
+
+var commentFieldElement = uploadFormElement.querySelector('.text__description');
+commentFieldElement.addEventListener('focusin', function () {
+  document.removeEventListener('keydown', popupEscClickHandler);
+});
+
+commentFieldElement.addEventListener('focusout', function () {
+  document.addEventListener('keydown', popupEscClickHandler);
+});
+*/
