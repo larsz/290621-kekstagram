@@ -74,8 +74,11 @@ var featuredPhotoCloseElement = featuredPhotoElement.querySelector('.big-picture
 var uploadFormElement = document.querySelector('.img-upload__form');
 var uploadFileElement = uploadFormElement.querySelector('#upload-file');
 var uploadedFileEditFormElement = uploadFormElement.querySelector('.img-upload__overlay');
+var uploadFormSubmitElement = document.querySelector('.img-upload__submit');
 var uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
 var previewElement = uploadFormElement.querySelector('.img-upload__preview');
+var hashTagsInputElement = uploadFormElement.querySelector('.text__hashtags');
+var commentFieldElement = uploadFormElement.querySelector('.text__description');
 
 // common functions
 var getRandomNumber = function (min, max) {
@@ -335,6 +338,9 @@ var openEditForm = function () {
 
 var closeEditForm = function () {
   uploadFileElement.value = '';
+  hashTagsInputElement.value = '';
+  commentFieldElement.value = '';
+
   uploadedFileEditFormElement.classList.add('hidden');
   uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
   uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
@@ -387,8 +393,6 @@ resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
 resizePlusElement.addEventListener('click', resizePlusClickHandler);
 
 /* Hashtags & form validation */
-var hashTagsInputElement = uploadFormElement.querySelector('.text__hashtags');
-
 var showHashtagsValidationError = function (message) {
   hashTagsInputElement.setCustomValidity(message);
   hashTagsInputElement.style.borderColor = 'red';
@@ -411,47 +415,44 @@ var checkHashtagsValidity = function () {
     return true;
   }
 
-  hashtags.forEach(function (hashtag) {
-    if (hashtag.indexOf('#') !== 0 && hashtag.length > 0) {
+  for (var i = 0, max = hashtags.length; i < max; i++) {
+    if (hashtags[i].indexOf('#') !== 0 && hashtags[i].length > 0) {
       validationErrors.push('Хэш-теги должны начинаться с символа #');
-    } else if (hashtag.indexOf('#') !== hashtag.lastIndexOf('#')) {
+      break;
+    } else if (hashtags[i].indexOf('#') !== hashtags[i].lastIndexOf('#')) {
       validationErrors.push('Хэш-теги должны разделяться пробелами.');
-    } else if (hashtag.length > Hashtag.MAX) {
+      break;
+    } else if (hashtags[i].length > Hashtag.MAX) {
       validationErrors.push('Максимальная длина хэш-тега - ' + Hashtag.MAX + ' символов. ');
-    } else if (hashtag.length < Hashtag.MIN) {
+      break;
+    } else if (hashtags[i].length < Hashtag.MIN) {
       validationErrors.push('Минимальная длина хэш-тега - ' + Hashtag.MIN + ' символа. ');
-    } else if (validHashTags.length > Hashtag.LIMIT) {
-      validationErrors.push('Нельзя указать больше пяти хэш-тегов');
-    } else if (validHashTags.indexOf(hashtag) !== -1) {
+      break;
+    } else if (validHashTags.indexOf(hashtags[i]) !== -1) {
       validationErrors.push('Один и тот же хэш-тег не может быть использован дважды');
+      break;
     } else {
-      clearHashtagsValidationError();
-      validHashTags.push(hashtag);
-      isValid = true;
+      validHashTags.push(hashtags[i]);
     }
+  }
 
-  });
+  if (validHashTags.length > Hashtag.LIMIT) {
+    validationErrors.push('Нельзя указать больше пяти хэш-тегов');
+  }
 
   if (validationErrors.length > 0) {
     validationErrors.forEach(function (error) {
       showHashtagsValidationError(error);
     });
+  } else {
+    clearHashtagsValidationError();
+    isValid = true;
   }
 
   return isValid;
 };
 
-var uploadFormSubmitHandler = function (evt) {
-
-  if (!uploadFormElement.checkValidity()) {
-    evt.preventDefault();
-    hashTagsInputElement.focus();
-  }
-};
-
-
-hashTagsInputElement.addEventListener('change', checkHashtagsValidity, false);
-uploadFormElement.addEventListener('submit', uploadFormSubmitHandler, false);
+uploadFormSubmitElement.addEventListener('click', checkHashtagsValidity);
 
 hashTagsInputElement.addEventListener('focusin', function () {
   document.removeEventListener('keydown', popupEscClickHandler);
@@ -461,7 +462,6 @@ hashTagsInputElement.addEventListener('focusout', function () {
   document.addEventListener('keydown', popupEscClickHandler);
 });
 
-var commentFieldElement = uploadFormElement.querySelector('.text__description');
 commentFieldElement.addEventListener('focusin', function () {
   document.removeEventListener('keydown', popupEscClickHandler);
 });
