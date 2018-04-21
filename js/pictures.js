@@ -268,14 +268,104 @@ var sliderPinElement = uploadedFileEditFormElement.querySelector('.scale__pin');
 var effectsElement = uploadedFileEditFormElement.querySelector('.effects');
 var effectInputElement = uploadedFileEditFormElement.querySelectorAll('.effects__radio');
 
+var effectLevelLineElement = uploadedFileEditFormElement.querySelector('.scale__line');
+var scaleLevel = effectLevelLineElement.querySelector('.scale__level');
+
+/*
+sliderPinElement.addEventListener('mousemove', function (evt) {
+  console.log(evt);
+  console.log(evt.target);
+
+  evt.preventDefault();
+
+  var startCoords = {
+    y: evt.clientY
+  };
+
+  var sliderInitialY = evt.client;
+
+  console.log(startCoords);
+
+  var mouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = sliderInitialY - moveEvt.clientY;
+    var shiftedPosition = sliderPinElement.offsetLeft - shift;
+
+
+  };
+
+});
+*/
+
+var sliderPinMouseDownHandler = function (evt) {
+  console.log(evt);
+  console.log('sliderPinMouseDownHandler');
+  evt.preventDefault();
+
+  var startX = evt.clientX;
+  console.log('startX ', startX);
+
+  var mouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+    console.log('mouseMoveHandler');
+    console.log('moveEvt.clientX ', moveEvt.clientX);
+
+    var shift = startX - moveEvt.clientX;
+    startX = moveEvt.clientX;
+
+    var shiftedX = sliderPinElement.offsetLeft - shift;
+    var ratio = (shiftedX / effectLevelLineElement.offsetWidth) * 100;
+    console.log(ratio);
+
+    if (ratio > 0 && ratio < 100) {
+      sliderPinElement.style.left = ratio + '%';
+      scaleLevel.style.width = ratio + '%';
+    }
+
+    /*
+    setIntensityLevel(shiftedX);
+    */
+    console.log('sliderPinElement ', sliderPinElement.offsetLeft);
+    console.log('shift ', shift);
+
+    console.log('========');
+
+  };
+
+  var mouseUpHandler = function (upEvt) {
+    upEvt.preventDefault();
+    console.log('mouseUpHandler');
+
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
+
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler);
+
+};
+
+sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler);
+
+var setIntensityLevel = function (level) {
+  var intensityScale = effectLevelLineElement.offsetWidth;
+  var intensityLevel = (level / intensityScale).toFixed(2);
+
+  console.log('intensityScale ', intensityScale);
+  console.log('intensityLevel ', intensityLevel);
+};
+
+/*
 var getIntensityLevel = function () {
-  var effectLevelLine = uploadedFileEditFormElement.querySelector('.scale__line');
+  //var effectLevelLine = uploadedFileEditFormElement.querySelector('.scale__line');
   var intensityScale = effectLevelLine.offsetWidth;
   var sliderPinPosX = sliderPinElement.offsetLeft;
   var intensityLevel = (sliderPinPosX / intensityScale).toFixed(2);
 
   return intensityLevel;
 };
+*/
 
 var getCurrentFilter = function () {
   var currentFilter;
@@ -288,14 +378,6 @@ var getCurrentFilter = function () {
 
   return currentFilter;
 };
-
-sliderPinElement.addEventListener('mouseup', function () {
-  applyFilter();
-});
-
-effectsElement.addEventListener('change', function () {
-  applyFilter();
-});
 
 var applyFilter = function () {
   var selectedFilter = getCurrentFilter();
@@ -321,6 +403,15 @@ var applyFilter = function () {
     previewElement.style.filter = filters[selectedFilter];
   }
 };
+
+/*
+sliderPinElement.addEventListener('mouseup', function () {
+  applyFilter();
+});
+*/
+effectsElement.addEventListener('change', function () {
+  applyFilter();
+});
 
 var uploadFileChangeHandler = function () {
   openEditForm();
@@ -405,15 +496,16 @@ var clearHashtagsValidationError = function () {
 
 var checkHashtagsValidity = function () {
   var data = hashTagsInputElement.value.toLowerCase();
-  var hashtags = data.split(' ');
-  var validHashTags = [];
-  var validationErrors = [];
-  var isValid = false;
 
   if (data === '') {
     clearHashtagsValidationError();
     return true;
   }
+
+  var hashtags = data.split(' ');
+  var validHashTags = [];
+  var validationErrors = [];
+  var isValid = false;
 
   for (var i = 0, max = hashtags.length; i < max; i++) {
     if (hashtags[i].indexOf('#') !== 0 && hashtags[i].length > 0) {
