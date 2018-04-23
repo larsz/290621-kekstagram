@@ -43,7 +43,9 @@ var PhotoConsts = {
 
 var KeyCode = {
   ESC: 27,
-  ENTER: 13
+  ENTER: 13,
+  ARROW_LEFT: 37,
+  ARROW_RIGHT: 39
 };
 
 var Resize = {
@@ -301,7 +303,17 @@ var sliderPinMouseDownHandler = function (evt) {
 
 };
 
-sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler);
+var sliderPinKeyDownHandler = function (evt) {
+  var shift = sliderPinElement.offsetLeft;
+
+  if (evt.keyCode === KeyCode.ARROW_LEFT) {
+    shift -= 2;
+    updateSlider(shift);
+  } else if (evt.keyCode === KeyCode.ARROW_RIGHT) {
+    shift += 2;
+    updateSlider(shift);
+  }
+};
 
 var updateSlider = function (pinPosition) {
   var intensityLevel = ((pinPosition / effectLevelLineElement.offsetWidth) * 100).toFixed(2);
@@ -313,6 +325,14 @@ var updateSlider = function (pinPosition) {
   }
 
   applyFilter(intensityLevel);
+};
+
+var toogleSlider = function (isHidden) {
+  if (isHidden) {
+    sliderElement.classList.add('hidden');
+  } else {
+    sliderElement.classList.remove('hidden');
+  }
 };
 
 var getCurrentFilter = function () {
@@ -330,21 +350,16 @@ var getCurrentFilter = function () {
 var setCurrentFilter = function (evt) {
   var clickedFilter = evt.target;
   var clickedFilterName = clickedFilter.id.split('-').pop();
+  var isSliderHidden = clickedFilterName.includes('none');
 
-  if (clickedFilterName.includes('none')) {
-    previewElement.removeAttribute('style');
-    sliderElement.classList.add('hidden');
-  } else {
-    sliderElement.classList.remove('hidden');
-  }
-
+  toogleSlider(isSliderHidden);
   previewElement.removeAttribute('style');
-  previewElement.className = PhotoConsts.PREVIEW_CLASS + ' ' + PhotoConsts.EFFECTS.PREFIX_CLASS + clickedFilterName;
 
+  previewElement.className = PhotoConsts.PREVIEW_CLASS + ' ' + PhotoConsts.EFFECTS.PREFIX_CLASS + clickedFilterName;
   sliderPinElement.style.left = 100 + '%';
   scaleLevelElement.style.width = 100 + '%';
+  resizeValueElement.value = 100 + '%';
 };
-
 
 var applyFilter = function (intensity) {
   var selectedFilter = getCurrentFilter();
@@ -367,7 +382,14 @@ var applyFilter = function (intensity) {
 
 };
 
+var effectLevelLineClickHandler = function (clickedEvt) {
+  if (!clickedEvt.target.classList.contains('scale__pin')) {
+    updateSlider(clickedEvt.offsetX);
+  }
+};
+
 effectsElement.addEventListener('change', setCurrentFilter);
+effectLevelLineElement.addEventListener('click', effectLevelLineClickHandler);
 
 /* ----------------- Open & Close edit form ----------------- */
 
@@ -380,6 +402,9 @@ var openEditForm = function () {
   uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
   uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
   document.addEventListener('keydown', popupEscClickHandler);
+
+  sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler, false);
+  sliderPinElement.addEventListener('keydown', sliderPinKeyDownHandler);
 };
 
 var closeEditForm = function () {
@@ -391,6 +416,9 @@ var closeEditForm = function () {
   uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
   uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
   document.removeEventListener('keydown', popupEscClickHandler);
+
+  sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler, false);
+  sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
 };
 
 var uploadFormCloseClickHandler = function () {
