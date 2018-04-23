@@ -43,7 +43,9 @@ var PhotoConsts = {
 
 var KeyCode = {
   ESC: 27,
-  ENTER: 13
+  ENTER: 13,
+  ARROW_LEFT: 37,
+  ARROW_RIGHT: 39
 };
 
 var Resize = {
@@ -262,19 +264,75 @@ var popupCloseClickHandler = function () {
   closeFeaturedPhoto();
 };
 
-/* Effects slider settings */
+/* ----------------- Effects & Slider  ----------------- */
 var sliderElement = uploadedFileEditFormElement.querySelector('.img-upload__scale');
 var sliderPinElement = uploadedFileEditFormElement.querySelector('.scale__pin');
 var effectsElement = uploadedFileEditFormElement.querySelector('.effects');
 var effectInputElement = uploadedFileEditFormElement.querySelectorAll('.effects__radio');
 
-var getIntensityLevel = function () {
-  var effectLevelLine = uploadedFileEditFormElement.querySelector('.scale__line');
-  var intensityScale = effectLevelLine.offsetWidth;
-  var sliderPinPosX = sliderPinElement.offsetLeft;
-  var intensityLevel = (sliderPinPosX / intensityScale).toFixed(2);
+var effectLevelLineElement = uploadedFileEditFormElement.querySelector('.scale__line');
+var effectLevelInputElement = uploadedFileEditFormElement.querySelector('.scale__value');
+var scaleLevelElement = effectLevelLineElement.querySelector('.scale__level');
 
-  return intensityLevel;
+sliderElement.classList.add('hidden');
+
+var sliderPinMouseDownHandler = function (evt) {
+  evt.preventDefault();
+
+  var startX = evt.clientX;
+
+  var mouseMoveHandler = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = startX - moveEvt.clientX;
+    startX = moveEvt.clientX;
+
+    var actualPinPosition = sliderPinElement.offsetLeft - shift;
+
+    updateSlider(actualPinPosition);
+  };
+
+  var mouseUpHandler = function (upEvt) {
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', mouseMoveHandler);
+    document.removeEventListener('mouseup', mouseUpHandler);
+  };
+
+  document.addEventListener('mousemove', mouseMoveHandler);
+  document.addEventListener('mouseup', mouseUpHandler);
+
+};
+
+var sliderPinKeyDownHandler = function (evt) {
+  var shift = sliderPinElement.offsetLeft;
+
+  if (evt.keyCode === KeyCode.ARROW_LEFT) {
+    shift -= 2;
+    updateSlider(shift);
+  } else if (evt.keyCode === KeyCode.ARROW_RIGHT) {
+    shift += 2;
+    updateSlider(shift);
+  }
+};
+
+var updateSlider = function (pinPosition) {
+  var intensityLevel = ((pinPosition / effectLevelLineElement.offsetWidth) * 100).toFixed(2);
+
+  if (intensityLevel > 0 && intensityLevel < 100) {
+    sliderPinElement.style.left = intensityLevel + '%';
+    scaleLevelElement.style.width = intensityLevel + '%';
+    effectLevelInputElement.value = intensityLevel;
+  }
+
+  applyFilter(intensityLevel);
+};
+
+var toogleSlider = function (isHidden) {
+  if (isHidden) {
+    sliderElement.classList.add('hidden');
+  } else {
+    sliderElement.classList.remove('hidden');
+  }
 };
 
 var getCurrentFilter = function () {
@@ -289,51 +347,64 @@ var getCurrentFilter = function () {
   return currentFilter;
 };
 
-sliderPinElement.addEventListener('mouseup', function () {
-  applyFilter();
-});
+var setCurrentFilter = function (evt) {
+  var clickedFilter = evt.target;
+  var clickedFilterName = clickedFilter.id.split('-').pop();
+  var isSliderHidden = clickedFilterName.includes('none');
 
-effectsElement.addEventListener('change', function () {
-  applyFilter();
-});
+  toogleSlider(isSliderHidden);
+  previewElement.removeAttribute('style');
 
-var applyFilter = function () {
+  previewElement.className = PhotoConsts.PREVIEW_CLASS + ' ' + PhotoConsts.EFFECTS.PREFIX_CLASS + clickedFilterName;
+  sliderPinElement.style.left = 100 + '%';
+  scaleLevelElement.style.width = 100 + '%';
+  resizeValueElement.value = 100 + '%';
+};
+
+var applyFilter = function (intensity) {
   var selectedFilter = getCurrentFilter();
   var appliedEffectClassName = PhotoConsts.EFFECTS.PREFIX_CLASS + selectedFilter;
   previewElement.className = PhotoConsts.PREVIEW_CLASS + ' ' + appliedEffectClassName;
 
-  if (selectedFilter === PhotoConsts.EFFECTS.DEFAULT) {
-    previewElement.removeAttribute('style');
-    sliderElement.classList.add('hidden');
-  } else {
-    sliderElement.classList.remove('hidden');
-    var selectedIntensity = getIntensityLevel();
+  sliderElement.classList.remove('hidden');
+  var selectedIntensity = intensity / 100;
 
-    var filters = {
-      none: 'none',
-      chrome: 'grayscale(' + selectedIntensity + ')',
-      sepia: 'sepia(' + selectedIntensity + ')',
-      marvin: 'invert(' + Math.round(selectedIntensity * 100) + '%)',
-      phobos: 'blur(' + selectedIntensity * 3 + 'px)',
-      heat: 'brightness(' + selectedIntensity * 3 + ')'
-    };
+  var filters = {
+    none: 'none',
+    chrome: 'grayscale(' + selectedIntensity + ')',
+    sepia: 'sepia(' + selectedIntensity + ')',
+    marvin: 'invert(' + Math.round(selectedIntensity * 100) + '%)',
+    phobos: 'blur(' + selectedIntensity * 3 + 'px)',
+    heat: 'brightness(' + selectedIntensity * 3 + ')'
+  };
 
-    previewElement.style.filter = filters[selectedFilter];
+  previewElement.style.filter = filters[selectedFilter];
+
+};
+
+var effectLevelLineClickHandler = function (clickedEvt) {
+  if (!clickedEvt.target.classList.contains('scale__pin')) {
+    updateSlider(clickedEvt.offsetX);
   }
 };
+
+effectsElement.addEventListener('change', setCurrentFilter);
+effectLevelLineElement.addEventListener('click', effectLevelLineClickHandler);
+
+/* ----------------- Open & Close edit form ----------------- */
 
 var uploadFileChangeHandler = function () {
   openEditForm();
 };
-
-uploadFileElement.addEventListener('change', uploadFileChangeHandler);
 
 var openEditForm = function () {
   uploadedFileEditFormElement.classList.remove('hidden');
   uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
   uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
   document.addEventListener('keydown', popupEscClickHandler);
-  applyFilter();
+
+  sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler, false);
+  sliderPinElement.addEventListener('keydown', sliderPinKeyDownHandler);
 };
 
 var closeEditForm = function () {
@@ -345,6 +416,9 @@ var closeEditForm = function () {
   uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
   uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
   document.removeEventListener('keydown', popupEscClickHandler);
+
+  sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler, false);
+  sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
 };
 
 var uploadFormCloseClickHandler = function () {
@@ -372,7 +446,9 @@ var closePopup = function () {
   }
 };
 
-/* Resize control */
+uploadFileElement.addEventListener('change', uploadFileChangeHandler);
+
+/* ----------------- Resize control ----------------- */
 var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
 var resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
 var resizeValueElement = uploadFormElement.querySelector('.resize__control--value');
@@ -392,7 +468,7 @@ var resizePlusClickHandler = function () {
 resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
 resizePlusElement.addEventListener('click', resizePlusClickHandler);
 
-/* Hashtags & form validation */
+/* ----------------- Hashtags & form validation ----------------- */
 var showHashtagsValidationError = function (message) {
   hashTagsInputElement.setCustomValidity(message);
   hashTagsInputElement.style.borderColor = 'red';
@@ -405,15 +481,16 @@ var clearHashtagsValidationError = function () {
 
 var checkHashtagsValidity = function () {
   var data = hashTagsInputElement.value.toLowerCase();
-  var hashtags = data.split(' ');
-  var validHashTags = [];
-  var validationErrors = [];
-  var isValid = false;
 
   if (data === '') {
     clearHashtagsValidationError();
     return true;
   }
+
+  var hashtags = data.split(' ');
+  var validHashTags = [];
+  var validationErrors = [];
+  var isValid = false;
 
   for (var i = 0, max = hashtags.length; i < max; i++) {
     if (hashtags[i].indexOf('#') !== 0 && hashtags[i].length > 0) {
