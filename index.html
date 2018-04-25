@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/fixes.css">
   <link rel="preload" href="fonts/OpenSans-Regular.woff2" as="font">
   <link rel="preload" href="fonts/OpenSansCondensed-Bold.woff2" as="font">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -32,7 +33,9 @@
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
 
-          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image"
+          action="https://js.dump.academy/kekstagram" method="post"
+          enctype="multipart/form-data" autocomplete="off">
 
             <fieldset class="img-upload__start">
               <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename" required>
@@ -55,7 +58,8 @@
 
                   <fieldset class="img-upload__resize resize">
                     <button type="button" class="resize__control resize__control--minus">Уменьшить</button>
-                    <input type="text" class="resize__control resize__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="resize__control resize__control--value"
+                    min="25" max="100" step="25" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="resize__control resize__control--plus">Увеличить</button>
                   </fieldset>
 
@@ -77,7 +81,7 @@
                 <fieldset class="img-upload__effects effects">
                   <ul class="effects__list">
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-none" value="none">
+                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-none" value="none" checked>
                       <label for="effect-none" class="effects__label">
                         <span class="effects__preview effects__preview--none">Превью фото без эффекта</span>
                         Оригинал
@@ -112,7 +116,7 @@
                       </label>
                     </li>
                     <li class="effects__item">
-                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-heat" value="heat" checked>
+                      <input type="radio" class="effects__radio visually-hidden" name="effect" id="effect-heat" value="heat">
                       <label for="effect-heat" class="effects__label">
                         <span class="effects__preview effects__preview--heat">Превью эффекта Зной</span>
                         Зной
@@ -122,8 +126,8 @@
                 </fieldset>
 
                 <fieldset class="img-upload__text text">
-                  <input class="text__hashtags" name="hashtags" placeholder="#хэш-тег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <input class="text__hashtags" name="hashtags" placeholder="#хэш-тег" minlength="2" maxlength="104">
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
 
                 <button type="submit" class="img-upload__submit" id="upload-submit">Опубликовать</button>
@@ -206,5 +210,13 @@
     </a>
   </template>
 
+<script src="js/utils.js"></script>
+<script src="js/data.js"></script>
+<script src="js/preview.js"></script>
+<script src="js/form-filter.js"></script>
+<script src="js/form-resize.js"></script>
+<script src="js/form-validate.js"></script>
+<script src="js/form.js"></script>
+<script src="js/pictures.js"></script>
 </body>
 </html>
