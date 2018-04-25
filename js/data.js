@@ -15,12 +15,6 @@
       MIN: 1,
       MAX: 2
     },
-    AVATAR_LIMITS: {
-      MIN: 1,
-      MAX: 6
-    },
-    AVATAR_PATH: 'img/avatar-',
-    AVATAR_EXT: '.svg',
     DESCRIPTIONS: [
       'Тестим новую камеру!',
       'Затусили с друзьями на море',
@@ -85,7 +79,8 @@
   };
 
   window.data = {
-    generateData: generateData
+    generateData: generateData,
+    PhotoConsts: PhotoConsts
   };
 
 })();

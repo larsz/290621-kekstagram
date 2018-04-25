@@ -1,12 +1,11 @@
 'use strict';
 (function () {
-  var PHOTOS_QUANTITY = 25;
 
   // DOM elements
   var photoTemplateElement = document.querySelector('#picture');
   var photosListElement = document.querySelector('.pictures');
 
-  var generatedPhotos = window.data.generateData(PHOTOS_QUANTITY);
+  var generatedPhotos = window.data.generateData(window.data.PhotoConsts.QUANTITY);
 
   // Render thumbnails
   var createPhoto = function (photo) {
