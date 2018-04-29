@@ -10,7 +10,6 @@
   var uploadFormSubmitElement = document.querySelector('.img-upload__submit');
   var uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
   var commentFieldElement = uploadFormElement.querySelector('.text__description');
-  var sliderPinElement = uploadFormElement.querySelector('.scale__pin');
   var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
   var resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
 
@@ -23,11 +22,6 @@
     uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
     uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
     document.addEventListener('keydown', popupEscClickHandler);
-
-    sliderPinElement.addEventListener('mousedown', window.formFilter.sliderPinMouseDownHandler, false);
-    sliderPinElement.addEventListener('keydown', window.formFilter.sliderPinKeyDownHandler);
-    resizeMinusElement.addEventListener('click', window.formResize.decrease);
-    resizePlusElement.addEventListener('click', window.formResize.increase);
   };
 
   var closeEditForm = function () {
@@ -40,8 +34,6 @@
     uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
     document.removeEventListener('keydown', popupEscClickHandler);
 
-    sliderPinElement.removeEventListener('mousedown', window.formFilter.sliderPinMouseDownHandler, false);
-    sliderPinElement.removeEventListener('keydown', window.formFilter.sliderPinKeyDownHandler);
     resizeMinusElement.removeEventListener('click', window.formResize.decrease);
     resizePlusElement.removeEventListener('click', window.formResize.increase);
   };
