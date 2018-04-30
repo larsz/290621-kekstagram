@@ -20,6 +20,7 @@
   var toogleSlider = function (isHidden) {
     if (isHidden) {
       sliderElement.classList.add('hidden');
+      window.slider.destroy();
     } else {
       sliderElement.classList.remove('hidden');
       window.slider.init(applyFilter);
