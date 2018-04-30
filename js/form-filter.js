@@ -13,7 +13,6 @@
   var sliderElement = wrapperElement.querySelector('.img-upload__scale');
   var effectsElement = wrapperElement.querySelector('.effects');
   var effectInputElement = effectsElement.querySelectorAll('.effects__radio');
-  var resizeValueElement = wrapperElement.querySelector('.resize__control--value');
 
   sliderElement.classList.add('hidden');
 
@@ -44,11 +43,10 @@
     var clickedFilterName = clickedFilter.id.split('-').pop();
     var isSliderHidden = clickedFilterName.includes('none');
 
-
     toogleSlider(isSliderHidden);
     previewElement.removeAttribute('style');
     previewElement.className = Effects.PREVIEW_CLASS + ' ' + Effects.PREFIX_CLASS + clickedFilterName;
-    resizeValueElement.value = 100 + '%';
+    window.formResize.setDefault();
   };
 
   var applyFilter = function (intensity) {
@@ -76,6 +74,5 @@
   window.formFilter = {
     apply: applyFilter
   };
-
 
 })();

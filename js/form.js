@@ -10,8 +10,6 @@
   var uploadFormSubmitElement = document.querySelector('.img-upload__submit');
   var uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
   var commentFieldElement = uploadFormElement.querySelector('.text__description');
-  var resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
-  var resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
 
   var uploadFileChangeHandler = function () {
     openEditForm();
@@ -22,6 +20,8 @@
     uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
     uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
     document.addEventListener('keydown', popupEscClickHandler);
+
+    window.formResize.init();
   };
 
   var closeEditForm = function () {
@@ -34,8 +34,7 @@
     uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
     document.removeEventListener('keydown', popupEscClickHandler);
 
-    resizeMinusElement.removeEventListener('click', window.formResize.decrease);
-    resizePlusElement.removeEventListener('click', window.formResize.increase);
+    window.formResize.destroy();
   };
 
   var uploadFormCloseClickHandler = function () {
