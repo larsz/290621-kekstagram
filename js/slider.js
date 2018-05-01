@@ -11,6 +11,7 @@
   var SLIDER_MAX_VALUE = 453;
 
   var updateSlider;
+  var isSliderCreated;
 
   var initDom = function () {
     sliderElement = document.querySelector('.img-upload__scale');
@@ -18,6 +19,8 @@
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
     effectLevelInputElement = sliderElement.querySelector('.scale__value');
     scaleLevelElement = effectLevelLineElement.querySelector('.scale__level');
+
+    isSliderCreated = true;
   };
 
   var sliderPinMouseDownHandler = function (evt) {
@@ -72,10 +75,11 @@
   };
 
   var init = function (callback) {
-    initDom();
 
-    /* handlers */
-    setupEventHandlers(true);
+    if (!isSliderCreated) {
+      initDom();
+      setupEventHandlers(true);
+    }
 
     updateSlider = function (pinPosition) {
       var intensityLevel = ((pinPosition / effectLevelLineElement.offsetWidth) * 100).toFixed(2);
@@ -100,6 +104,7 @@
 
   var destroy = function () {
     setupEventHandlers(false);
+    isSliderCreated = false;
   };
 
   window.slider = {
