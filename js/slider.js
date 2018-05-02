@@ -13,7 +13,7 @@
   var updateSlider;
   var isSliderCreated;
 
-  var initDom = function () {
+  var initDOM = function () {
     sliderElement = document.querySelector('.img-upload__scale');
     sliderPinElement = sliderElement.querySelector('.scale__pin');
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
@@ -67,18 +67,13 @@
     }
   };
 
-  var setupEventHandlers = function (setupMode) {
-    var action = setupMode ? 'addEventListener' : 'removeEventListener';
-    sliderPinElement[action]('mousedown', sliderPinMouseDownHandler);
-    sliderPinElement[action]('keydown', sliderPinKeyDownHandler);
-    effectLevelLineElement[action]('click', sliderLineClickHandler);
-  };
-
-  var init = function (callback) {
+  var initSlider = function (callback) {
 
     if (!isSliderCreated) {
-      initDom();
-      setupEventHandlers(true);
+      initDOM();
+      sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler);
+      sliderPinElement.addEventListener('keydown', sliderPinKeyDownHandler);
+      effectLevelLineElement.addEventListener('click', sliderLineClickHandler);
     }
 
     updateSlider = function (pinPosition) {
@@ -102,14 +97,16 @@
     resetSlider();
   };
 
-  var destroy = function () {
-    setupEventHandlers(false);
+  var destroySlider = function () {
     isSliderCreated = false;
+    sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler);
+    sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
+    effectLevelLineElement.removeEventListener('click', sliderLineClickHandler);
   };
 
   window.slider = {
-    init: init,
-    destroy: destroy
+    init: initSlider,
+    destroy: destroySlider
   };
 
 })();
