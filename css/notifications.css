@@ -1,0 +1,51 @@
+.notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  margin: 0 auto;
+  padding: 4px 0;
+  font-size: 21px;
+  line-height: 1.5;
+  text-align: center;
+  color: #fff;
+}
+.notification + .notification {
+  top: 42px;
+}
+.success.notification {
+  background-color: green;
+}
+.error.notification {
+  background-color: red;
+}
+.notification__close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    display: block;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    font-size: 0;
+    text-indent: -9999em;
+    -webkit-appearance: none;
+}
+.notification__close:active {
+    transform: translate(1px, 1px);
+}
+.notification__close:after {
+    display: block;
+
+    font-family: Roboto, sans-serif;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 30px;
+
+    content: '×';
+    text-indent: 0;
+    color: #fff;
+}
+

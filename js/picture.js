@@ -3,12 +3,9 @@
 
   // DOM elements
   var photoTemplateElement = document.querySelector('#picture');
-  var photosListElement = document.querySelector('.pictures');
 
-  var generatedPhotos = window.data.generateData(window.data.PhotoConsts.QUANTITY);
-
-  // Render thumbnails
-  var createPhoto = function (photo) {
+  // Render thumbnail
+  var renderThumbnail = function (photo) {
     var clonedPhotoTemplate = photoTemplateElement.content.cloneNode(true);
     var clonedPhoto = clonedPhotoTemplate.querySelector('.picture__link');
     var clonedPhotoImg = clonedPhoto.querySelector('.picture__img');
@@ -19,29 +16,16 @@
     clonedPhotoLikes.textContent = photo.likes;
     clonedPhotoComments.textContent = photo.comments.length;
 
-    clonedPhoto.addEventListener('click', function () {
+    clonedPhoto.addEventListener('click', function (evt) {
+      evt.preventDefault();
       window.preview.show(photo);
     });
 
     return clonedPhoto;
   };
 
-  // Save thumbnails fragment
-  var renderPhotos = function () {
-    var photos = document.createDocumentFragment();
-    generatedPhotos.forEach(function (photo) {
-      photos.appendChild(createPhoto(photo));
-    });
-
-    return photos;
+  window.picture = {
+    render: renderThumbnail
   };
-
-  var renderedPhotos = renderPhotos();
-
-  var showThumbnails = function (fragment) {
-    photosListElement.appendChild(fragment);
-  };
-
-  showThumbnails(renderedPhotos);
 
 })();

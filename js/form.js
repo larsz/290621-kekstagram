@@ -10,6 +10,7 @@
   var uploadFormSubmitElement = document.querySelector('.img-upload__submit');
   var uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
   var commentFieldElement = uploadFormElement.querySelector('.text__description');
+  var errorMessageElement = uploadFormElement.querySelector('.img-upload__message--error');
 
   var uploadFileChangeHandler = function () {
     openEditForm();
@@ -22,12 +23,14 @@
     document.addEventListener('keydown', popupEscClickHandler);
 
     window.formResize.init();
+    window.notification.hideAll();
   };
 
   var closeEditForm = function () {
     uploadFileElement.value = '';
     hashTagsInputElement.value = '';
     commentFieldElement.value = '';
+    hideFormError();
 
     uploadedFileEditFormElement.classList.add('hidden');
     uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
@@ -49,8 +52,27 @@
     window.utils.isEnterEvent(evt, closeEditForm);
   };
 
+  var showFormError = function (message) {
+    errorMessageElement.textContent = message;
+    errorMessageElement.classList.remove('hidden');
+  };
+
+  var hideFormError = function () {
+    window.utils.removeChilds(errorMessageElement);
+    errorMessageElement.classList.add('hidden');
+  };
+
+  var submitFormSuccessHandler = function () {
+    hideFormError();
+    window.notification.showInfo();
+    closeEditForm();
+  };
+
+  var submitFormErrorHandler = function (errorMessage) {
+    showFormError(errorMessage);
+  };
+
   uploadFileElement.addEventListener('change', uploadFileChangeHandler);
-  uploadFormSubmitElement.addEventListener('click', window.formValidate.checkHashTags);
 
   hashTagsInputElement.addEventListener('focusin', function () {
     document.removeEventListener('keydown', popupEscClickHandler);
@@ -66,6 +88,14 @@
 
   commentFieldElement.addEventListener('focusout', function () {
     document.addEventListener('keydown', popupEscClickHandler);
+  });
+
+  uploadFormSubmitElement.addEventListener('click', window.formValidate.checkHashTags);
+
+  uploadFormElement.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(uploadFormElement);
+    window.backend.save(formData, submitFormSuccessHandler, submitFormErrorHandler);
   });
 
 })();
