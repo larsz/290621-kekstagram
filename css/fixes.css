@@ -4,3 +4,8 @@
 .img-upload__resize {
   z-index: 1;
 }
+.img-upload__message--error {
+  z-index: 10;
+  padding-left: 10px;
+  padding-right: 10px;
+}

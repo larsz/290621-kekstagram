@@ -45,7 +45,7 @@
     var comments = renderComments(featuredPhoto.comments);
 
     img.src = featuredPhoto.url;
-    description.textContent = featuredPhoto.description;
+    description.textContent = featuredPhoto.comments[0];
     likesCount.textContent = featuredPhoto.likes;
     commentsCount.textContent = featuredPhoto.comments.length;
 
