@@ -18,6 +18,7 @@
   var successLoadDataHandler = function (loadedData) {
     var renderedPhotos = renderPhotos(loadedData);
     showThumbnails(renderedPhotos);
+    window.sort.init();
   };
 
   window.backend.load(successLoadDataHandler, window.notification.showError);
