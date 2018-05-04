@@ -5,7 +5,7 @@
   var sortGalleryBtnsElement;
   var selectedSortBtn;
 
-  var photos = null;
+  var photos = [];
 
   var ACTIVE_FILTER_CLASS = 'img-filters__button--active';
   var INACTIVE_FILTERS_CLASS = 'img-filters--inactive';
@@ -41,11 +41,10 @@
     initDOMElements();
     sortGalleryElement.classList.remove(INACTIVE_FILTERS_CLASS);
 
-    var clonedPhotos = photos.slice(0);
-
     sortGalleryBtnsElement.forEach(function (btn) {
       btn.addEventListener('click', function (evt) {
 
+        var clonedPhotos = photos.slice(0);
         var currentBtn = evt.target;
         var sortBy = currentBtn.id;
 
