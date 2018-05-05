@@ -19,6 +19,7 @@
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
     effectLevelInputElement = sliderElement.querySelector('.scale__value');
     scaleLevelElement = effectLevelLineElement.querySelector('.scale__level');
+    effectLevelInputElement.type = 'text';
 
     isSliderCreated = true;
   };
