@@ -16,14 +16,6 @@
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  var getRandomIndex = function (arr) {
-    return getRandomNumber(0, arr.length - 1);
-  };
-
-  var getRandomElement = function (arr) {
-    return arr[getRandomIndex(arr)];
-  };
-
   var shuffleArray = function (arr) {
     var result = [];
     var i;
@@ -43,13 +35,13 @@
   };
 
   var isEscEvent = function (evt, action) {
-    if (evt.keyCode === KeyCode.ESC) {
+    if (evt.keyCode === KeyCode.ESC && typeof action === 'function') {
       action();
     }
   };
 
   var isEnterEvent = function (evt, action) {
-    if (evt.keyCode === KeyCode.ENTER) {
+    if (evt.keyCode === KeyCode.ENTER && typeof action === 'function') {
       action();
     }
   };
@@ -63,8 +55,6 @@
 
   window.utils = {
     getRandomNumber: getRandomNumber,
-    getRandomIndex: getRandomIndex,
-    getRandomElement: getRandomElement,
     shuffleArray: shuffleArray,
     removeChilds: removeChilds,
     isEscEvent: isEscEvent,
