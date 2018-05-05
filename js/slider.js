@@ -13,7 +13,7 @@
   var updateSlider;
   var isSliderCreated;
 
-  var initDOM = function () {
+  var initDOMElements = function () {
     sliderElement = document.querySelector('.img-upload__scale');
     sliderPinElement = sliderElement.querySelector('.scale__pin');
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
@@ -70,7 +70,7 @@
   var initSlider = function (callback) {
 
     if (!isSliderCreated) {
-      initDOM();
+      initDOMElements();
       sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler);
       sliderPinElement.addEventListener('keydown', sliderPinKeyDownHandler);
       effectLevelLineElement.addEventListener('click', sliderLineClickHandler);
