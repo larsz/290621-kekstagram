@@ -57,7 +57,7 @@
   };
 
   var applyFilter = function (intensity) {
-    var selectedFilter = selectedEffectInputElement.value;
+    var selectedFilter = currentFilter.value;
     var appliedEffectClassName = Effects.PREFIX_CLASS + selectedFilter;
     previewElement.className = Effects.PREVIEW_CLASS + ' ' + appliedEffectClassName;
 
