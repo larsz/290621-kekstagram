@@ -1,14 +1,14 @@
 'use strict';
 (function () {
 
+  var ACTIVE_FILTER_CLASS = 'img-filters__button--active';
+  var INACTIVE_FILTERS_CLASS = 'img-filters--inactive';
+
   var sortGalleryElement;
   var sortGalleryBtnsElement;
   var selectedSortBtnElement;
 
   var photos = [];
-
-  var ACTIVE_FILTER_CLASS = 'img-filters__button--active';
-  var INACTIVE_FILTERS_CLASS = 'img-filters--inactive';
 
   var initDOMElements = function () {
     sortGalleryElement = document.querySelector('.img-filters');

@@ -2,13 +2,13 @@
 
 (function () {
 
+  var SLIDER_MAX_VALUE = 453;
+
   var sliderElement;
   var sliderPinElement;
   var effectLevelLineElement;
   var effectLevelInputElement;
   var scaleLevelElement;
-
-  var SLIDER_MAX_VALUE = 453;
 
   var updateSlider;
   var isSliderCreated;
