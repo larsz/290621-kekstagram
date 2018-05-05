@@ -35,26 +35,26 @@
     previewElement.style.transform = 'scale(' + resizeVal / 100 + ')';
   };
 
-  var setDefault = function () {
+  var resetResizerToDefault = function () {
     resizeValueElement.value = Resize.DEFAULT + '%';
   };
 
-  var init = function () {
+  var initResizer = function () {
     initDOMElements();
     resizePlusElement.addEventListener('click', resizePlusClickHandler);
     resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
 
   };
 
-  var destroy = function () {
+  var destroyResizer = function () {
     resizePlusElement.removeEventListener('click', resizePlusClickHandler);
     resizeMinusElement.removeEventListener('click', resizeMinusClickHandler);
   };
 
   window.formResize = {
-    init: init,
-    setDefault: setDefault,
-    destroy: destroy
+    init: initResizer,
+    setDefault: resetResizerToDefault,
+    destroy: destroyResizer
   };
 
 })();

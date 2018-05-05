@@ -67,6 +67,7 @@
     uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
     document.addEventListener('keydown', popupEscClickHandler);
 
+    window.formFilter.init();
     window.formResize.init();
     window.notification.hideAll();
 
@@ -107,7 +108,9 @@
     uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
     document.removeEventListener('keydown', popupEscClickHandler);
 
+    window.formFilter.destroy();
     window.formResize.destroy();
+    window.slider.destroy();
   };
 
 })();

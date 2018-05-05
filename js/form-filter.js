@@ -8,13 +8,19 @@
     PREVIEW_CLASS: 'img-upload__preview'
   };
 
-  var wrapperElement = document.querySelector('.img-upload__wrapper');
-  var previewElement = wrapperElement.querySelector('.img-upload__preview');
-  var sliderElement = wrapperElement.querySelector('.img-upload__scale');
-  var effectsElement = wrapperElement.querySelector('.effects');
-  var effectInputElement = effectsElement.querySelectorAll('.effects__radio');
+  var wrapperElement;
+  var previewElement;
+  var sliderElement;
+  var effectsElement;
+  var effectInputElement;
 
-  sliderElement.classList.add('hidden');
+  var initDOMElements = function () {
+    wrapperElement = document.querySelector('.img-upload__wrapper');
+    previewElement = wrapperElement.querySelector('.img-upload__preview');
+    sliderElement = wrapperElement.querySelector('.img-upload__scale');
+    effectsElement = wrapperElement.querySelector('.effects');
+    effectInputElement = effectsElement.querySelectorAll('.effects__radio');
+  };
 
   var toogleSlider = function (isHidden) {
     if (isHidden) {
@@ -69,9 +75,19 @@
 
   };
 
-  effectsElement.addEventListener('change', setCurrentFilter);
+  var initFilters = function () {
+    initDOMElements();
+    sliderElement.classList.add('hidden');
+    effectsElement.addEventListener('change', setCurrentFilter);
+  };
+
+  var destroyFilters = function () {
+    effectsElement.removeEventListener('change', setCurrentFilter);
+  };
 
   window.formFilter = {
+    init: initFilters,
+    destroy: destroyFilters,
     apply: applyFilter
   };
 
