@@ -98,10 +98,12 @@
   };
 
   var destroySlider = function () {
-    isSliderCreated = false;
-    sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler);
-    sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
-    effectLevelLineElement.removeEventListener('click', sliderLineClickHandler);
+    if (isSliderCreated) {
+      isSliderCreated = false;
+      sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler);
+      sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
+      effectLevelLineElement.removeEventListener('click', sliderLineClickHandler);
+    }
   };
 
   window.slider = {

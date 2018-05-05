@@ -12,14 +12,23 @@
   var previewElement;
   var sliderElement;
   var effectsElement;
-  var effectInputElement;
+  var effectsInputsElement;
+  var selectedEffectInputElement;
+  var currentFilter;
+
+  var resetRadios = function () {
+    effectsInputsElement.forEach(function (radio) {
+      radio.checked = false;
+    });
+  };
 
   var initDOMElements = function () {
     wrapperElement = document.querySelector('.img-upload__wrapper');
     previewElement = wrapperElement.querySelector('.img-upload__preview');
     sliderElement = wrapperElement.querySelector('.img-upload__scale');
     effectsElement = wrapperElement.querySelector('.effects');
-    effectInputElement = effectsElement.querySelectorAll('.effects__radio');
+    effectsInputsElement = wrapperElement.querySelectorAll('.effects__radio');
+    selectedEffectInputElement = effectsElement.querySelector('.effects__radio:checked');
   };
 
   var toogleSlider = function (isHidden) {
@@ -32,22 +41,14 @@
     }
   };
 
-  var getCurrentFilter = function () {
-    var currentFilter;
-    for (var i = 0, max = effectInputElement.length; i < max; i++) {
-      if (effectInputElement[i].checked) {
-        currentFilter = effectInputElement[i].value;
-        break;
-      }
-    }
-
-    return currentFilter;
-  };
-
   var setCurrentFilter = function (evt) {
     var clickedFilter = evt.target;
     var clickedFilterName = clickedFilter.id.split('-').pop();
     var isSliderHidden = clickedFilterName.includes('none');
+
+    currentFilter.checked = false;
+    clickedFilter.checked = true;
+    currentFilter = clickedFilter;
 
     toogleSlider(isSliderHidden);
     previewElement.removeAttribute('style');
@@ -56,7 +57,7 @@
   };
 
   var applyFilter = function (intensity) {
-    var selectedFilter = getCurrentFilter();
+    var selectedFilter = selectedEffectInputElement.value;
     var appliedEffectClassName = Effects.PREFIX_CLASS + selectedFilter;
     previewElement.className = Effects.PREVIEW_CLASS + ' ' + appliedEffectClassName;
 
@@ -77,12 +78,20 @@
 
   var initFilters = function () {
     initDOMElements();
+    currentFilter = selectedEffectInputElement;
+
     sliderElement.classList.add('hidden');
     effectsElement.addEventListener('change', setCurrentFilter);
   };
 
   var destroyFilters = function () {
+    var defaultFilterElement = effectsElement.querySelector('#effect-none');
+    previewElement.className = Effects.PREVIEW_CLASS;
+    previewElement.removeAttribute('style');
     effectsElement.removeEventListener('change', setCurrentFilter);
+
+    resetRadios();
+    defaultFilterElement.checked = true;
   };
 
   window.formFilter = {

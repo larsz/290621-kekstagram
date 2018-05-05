@@ -47,6 +47,7 @@
   };
 
   var destroyResizer = function () {
+    resizeValueElement.value = Resize.DEFAULT + '%';
     resizePlusElement.removeEventListener('click', resizePlusClickHandler);
     resizeMinusElement.removeEventListener('click', resizeMinusClickHandler);
   };
