@@ -8,10 +8,6 @@
     ARROW_RIGHT: 39
   };
 
-  var DEBOUNCE_INTERVAL = 500;
-  var lastTimeout;
-
-  // common functions
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
@@ -46,21 +42,13 @@
     }
   };
 
-  var debounce = function (fun) {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
-  };
-
   window.utils = {
     getRandomNumber: getRandomNumber,
     shuffleArray: shuffleArray,
     removeChilds: removeChilds,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
-    KeyCode: KeyCode,
-    debounce: debounce
+    KeyCode: KeyCode
   };
 
 })();

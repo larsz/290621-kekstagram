@@ -55,7 +55,7 @@
           currentBtn.classList.add(ACTIVE_FILTER_CLASS);
           selectedSortBtnElement = currentBtn;
 
-          window.utils.debounce(window.gallery.show(clonedPhotos));
+          window.debounce(window.gallery.show(clonedPhotos));
         }
       });
     });
