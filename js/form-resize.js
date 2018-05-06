@@ -15,7 +15,7 @@
   var resizeValueElement;
   var previewElement;
 
-  var initDom = function () {
+  var initDOMElements = function () {
     uploadFormElement = document.querySelector('.img-upload__form');
     resizePlusElement = uploadFormElement.querySelector('.resize__control--plus');
     resizeMinusElement = uploadFormElement.querySelector('.resize__control--minus');
@@ -35,29 +35,27 @@
     previewElement.style.transform = 'scale(' + resizeVal / 100 + ')';
   };
 
-  var setupEventHandlers = function (setupMode) {
-    var action = setupMode ? 'addEventListener' : 'removeEventListener';
-    resizePlusElement[action]('click', resizePlusClickHandler);
-    resizeMinusElement[action]('click', resizeMinusClickHandler);
-  };
-
-  var setDefault = function () {
+  var resetResizerToDefault = function () {
     resizeValueElement.value = Resize.DEFAULT + '%';
   };
 
-  var init = function () {
-    initDom();
-    setupEventHandlers(true);
+  var initResizer = function () {
+    initDOMElements();
+    resizePlusElement.addEventListener('click', resizePlusClickHandler);
+    resizeMinusElement.addEventListener('click', resizeMinusClickHandler);
+
   };
 
-  var destroy = function () {
-    setupEventHandlers(false);
+  var destroyResizer = function () {
+    resizeValueElement.value = Resize.DEFAULT + '%';
+    resizePlusElement.removeEventListener('click', resizePlusClickHandler);
+    resizeMinusElement.removeEventListener('click', resizeMinusClickHandler);
   };
 
   window.formResize = {
-    init: init,
-    setDefault: setDefault,
-    destroy: destroy
+    init: initResizer,
+    setDefault: resetResizerToDefault,
+    destroy: destroyResizer
   };
 
 })();

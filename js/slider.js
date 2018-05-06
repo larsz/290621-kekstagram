@@ -2,23 +2,24 @@
 
 (function () {
 
+  var SLIDER_MAX_VALUE = 453;
+
   var sliderElement;
   var sliderPinElement;
   var effectLevelLineElement;
   var effectLevelInputElement;
   var scaleLevelElement;
 
-  var SLIDER_MAX_VALUE = 453;
-
   var updateSlider;
   var isSliderCreated;
 
-  var initDOM = function () {
+  var initDOMElements = function () {
     sliderElement = document.querySelector('.img-upload__scale');
     sliderPinElement = sliderElement.querySelector('.scale__pin');
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
     effectLevelInputElement = sliderElement.querySelector('.scale__value');
     scaleLevelElement = effectLevelLineElement.querySelector('.scale__level');
+    effectLevelInputElement.type = 'text';
 
     isSliderCreated = true;
   };
@@ -70,7 +71,7 @@
   var initSlider = function (callback) {
 
     if (!isSliderCreated) {
-      initDOM();
+      initDOMElements();
       sliderPinElement.addEventListener('mousedown', sliderPinMouseDownHandler);
       sliderPinElement.addEventListener('keydown', sliderPinKeyDownHandler);
       effectLevelLineElement.addEventListener('click', sliderLineClickHandler);
@@ -90,18 +91,20 @@
       }
     };
 
-    var resetSlider = function () {
+    var setDefaultPosition = function () {
       updateSlider(SLIDER_MAX_VALUE);
     };
 
-    resetSlider();
+    setDefaultPosition();
   };
 
   var destroySlider = function () {
-    isSliderCreated = false;
-    sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler);
-    sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
-    effectLevelLineElement.removeEventListener('click', sliderLineClickHandler);
+    if (isSliderCreated) {
+      isSliderCreated = false;
+      sliderPinElement.removeEventListener('mousedown', sliderPinMouseDownHandler);
+      sliderPinElement.removeEventListener('keydown', sliderPinKeyDownHandler);
+      effectLevelLineElement.removeEventListener('click', sliderLineClickHandler);
+    }
   };
 
   window.slider = {

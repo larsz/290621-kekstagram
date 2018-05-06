@@ -8,20 +8,8 @@
     ARROW_RIGHT: 39
   };
 
-  var DEBOUNCE_INTERVAL = 500;
-  var lastTimeout;
-
-  // common functions
   var getRandomNumber = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-  };
-
-  var getRandomIndex = function (arr) {
-    return getRandomNumber(0, arr.length - 1);
-  };
-
-  var getRandomElement = function (arr) {
-    return arr[getRandomIndex(arr)];
   };
 
   var shuffleArray = function (arr) {
@@ -43,34 +31,24 @@
   };
 
   var isEscEvent = function (evt, action) {
-    if (evt.keyCode === KeyCode.ESC) {
+    if (evt.keyCode === KeyCode.ESC && typeof action === 'function') {
       action();
     }
   };
 
   var isEnterEvent = function (evt, action) {
-    if (evt.keyCode === KeyCode.ENTER) {
+    if (evt.keyCode === KeyCode.ENTER && typeof action === 'function') {
       action();
     }
   };
 
-  var debounce = function (fun) {
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
-  };
-
   window.utils = {
     getRandomNumber: getRandomNumber,
-    getRandomIndex: getRandomIndex,
-    getRandomElement: getRandomElement,
     shuffleArray: shuffleArray,
     removeChilds: removeChilds,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
-    KeyCode: KeyCode,
-    debounce: debounce
+    KeyCode: KeyCode
   };
 
 })();

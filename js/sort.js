@@ -1,19 +1,19 @@
 'use strict';
 (function () {
 
-  var sortGalleryElement;
-  var sortGalleryBtnsElement;
-  var selectedSortBtn;
-
-  var photos = [];
-
   var ACTIVE_FILTER_CLASS = 'img-filters__button--active';
   var INACTIVE_FILTERS_CLASS = 'img-filters--inactive';
+
+  var sortGalleryElement;
+  var sortGalleryBtnsElement;
+  var selectedSortBtnElement;
+
+  var photos = [];
 
   var initDOMElements = function () {
     sortGalleryElement = document.querySelector('.img-filters');
     sortGalleryBtnsElement = sortGalleryElement.querySelectorAll('.img-filters__button');
-    selectedSortBtn = sortGalleryElement.querySelector('.img-filters__button--active');
+    selectedSortBtnElement = sortGalleryElement.querySelector('.img-filters__button--active');
   };
 
   var sortMethods = {
@@ -51,11 +51,14 @@
         if (!currentBtn.classList.contains(ACTIVE_FILTER_CLASS)) {
           clonedPhotos = sortMethods[sortBy](clonedPhotos);
 
-          selectedSortBtn.classList.remove(ACTIVE_FILTER_CLASS);
+          selectedSortBtnElement.classList.remove(ACTIVE_FILTER_CLASS);
           currentBtn.classList.add(ACTIVE_FILTER_CLASS);
-          selectedSortBtn = currentBtn;
+          selectedSortBtnElement = currentBtn;
 
-          window.utils.debounce(window.gallery.show(clonedPhotos));
+          window.debounce(function () {
+            window.gallery.show(clonedPhotos);
+          });
+
         }
       });
     });
