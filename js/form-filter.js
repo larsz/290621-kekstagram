@@ -76,19 +76,23 @@
 
   };
 
+  var effectsElementChangeHandler = function (evt) {
+    setCurrentFilter(evt);
+  };
+
   var initFilters = function () {
     initDOMElements();
     currentFilter = selectedEffectInputElement;
 
     sliderElement.classList.add('hidden');
-    effectsElement.addEventListener('change', setCurrentFilter);
+    effectsElement.addEventListener('change', effectsElementChangeHandler);
   };
 
   var destroyFilters = function () {
     var defaultFilterElement = effectsElement.querySelector('#effect-none');
     previewElement.className = Effects.PREVIEW_CLASS;
     previewElement.removeAttribute('style');
-    effectsElement.removeEventListener('change', setCurrentFilter);
+    effectsElement.removeEventListener('change', effectsElementChangeHandler);
 
     resetRadios();
     defaultFilterElement.checked = true;
