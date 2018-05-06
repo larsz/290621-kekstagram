@@ -91,11 +91,11 @@
       }
     };
 
-    var resetSlider = function () {
+    var setDefaultPosition = function () {
       updateSlider(SLIDER_MAX_VALUE);
     };
 
-    resetSlider();
+    setDefaultPosition();
   };
 
   var destroySlider = function () {

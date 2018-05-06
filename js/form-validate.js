@@ -30,38 +30,33 @@
 
     var hashtags = data.split(' ');
     var validHashTags = [];
+
     var validationErrors = [];
     var isValid = false;
 
-    for (var i = 0, max = hashtags.length; i < max; i++) {
-      if (hashtags[i].indexOf('#') !== 0 && hashtags[i].length > 0) {
+    hashtags.forEach(function (hashtag) {
+      if (hashtag.indexOf('#') !== 0 && hashtag.length > 0) {
         validationErrors.push('Хэш-теги должны начинаться с символа #');
-        break;
-      } else if (hashtags[i].indexOf('#') !== hashtags[i].lastIndexOf('#')) {
+      } else if (hashtag.indexOf('#') !== hashtag.lastIndexOf('#')) {
         validationErrors.push('Хэш-теги должны разделяться пробелами.');
-        break;
-      } else if (hashtags[i].length > Hashtag.MAX) {
+      } else if (hashtag.length > Hashtag.MAX) {
         validationErrors.push('Максимальная длина хэш-тега - ' + Hashtag.MAX + ' символов. ');
-        break;
-      } else if (hashtags[i].length < Hashtag.MIN) {
+      } else if (hashtag.length < Hashtag.MIN) {
         validationErrors.push('Минимальная длина хэш-тега - ' + Hashtag.MIN + ' символа. ');
-        break;
-      } else if (validHashTags.indexOf(hashtags[i]) !== -1) {
+      } else if (validHashTags.indexOf(hashtag) !== -1) {
         validationErrors.push('Один и тот же хэш-тег не может быть использован дважды');
-        break;
       } else {
-        validHashTags.push(hashtags[i]);
+        validHashTags.push(hashtag);
       }
-    }
+    });
 
     if (validHashTags.length > Hashtag.LIMIT) {
       validationErrors.push('Нельзя указать больше пяти хэш-тегов');
     }
 
     if (validationErrors.length > 0) {
-      validationErrors.forEach(function (error) {
-        showHashtagsValidationError(error);
-      });
+      var errorMessages = validationErrors.join(', ');
+      showHashtagsValidationError(errorMessages);
     } else {
       clearHashtagsValidationError();
       isValid = true;

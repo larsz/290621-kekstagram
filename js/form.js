@@ -22,6 +22,16 @@
     errorMessageElement = uploadFormElement.querySelector('.img-upload__message--error');
   };
 
+  var showFormError = function (message) {
+    errorMessageElement.textContent = message;
+    errorMessageElement.classList.remove('hidden');
+  };
+
+  var hideFormError = function () {
+    window.utils.removeChilds(errorMessageElement);
+    errorMessageElement.classList.add('hidden');
+  };
+
   var uploadFileChangeHandler = function () {
     initDOMElements();
     openEditForm();
@@ -31,6 +41,8 @@
     closeEditForm();
   };
 
+  uploadFileElement.addEventListener('change', uploadFileChangeHandler);
+
   var popupEscClickHandler = function (evt) {
     window.utils.isEscEvent(evt, closeEditForm);
   };
@@ -39,16 +51,48 @@
     window.utils.isEnterEvent(evt, closeEditForm);
   };
 
-  uploadFileElement.addEventListener('change', uploadFileChangeHandler);
-
-  var showFormError = function (message) {
-    errorMessageElement.textContent = message;
-    errorMessageElement.classList.remove('hidden');
+  var hashTagsInputFocusInHandler = function () {
+    document.removeEventListener('keydown', popupEscClickHandler);
   };
 
-  var hideFormError = function () {
-    window.utils.removeChilds(errorMessageElement);
-    errorMessageElement.classList.add('hidden');
+  var hashTagsInputFocusOutHandler = function () {
+    document.addEventListener('keydown', popupEscClickHandler);
+  };
+
+  var commentFieldFocusInHandler = function () {
+    document.removeEventListener('keydown', popupEscClickHandler);
+  };
+
+  var commentFieldFocusOutHandler = function () {
+    document.addEventListener('keydown', popupEscClickHandler);
+  };
+
+  var setupFormSpecificEvents = function () {
+    uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
+    uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
+    document.addEventListener('keydown', popupEscClickHandler);
+
+    hashTagsInputElement.addEventListener('focusin', hashTagsInputFocusInHandler);
+    hashTagsInputElement.addEventListener('focusout', hashTagsInputFocusOutHandler);
+    commentFieldElement.addEventListener('focusin', commentFieldFocusInHandler);
+    commentFieldElement.addEventListener('focusout', commentFieldFocusOutHandler);
+
+    uploadFormSubmitElement.addEventListener('click', window.formValidate.checkHashTags);
+    uploadFormElement.addEventListener('submit', uploadFormSubmitHandler);
+  };
+
+  var destroyFormSpecificEvents = function () {
+    uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
+    uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
+    document.removeEventListener('keydown', popupEscClickHandler);
+
+    hashTagsInputElement.removeEventListener('focusin', hashTagsInputFocusInHandler);
+    hashTagsInputElement.removeEventListener('focusout', hashTagsInputFocusOutHandler);
+    commentFieldElement.removeEventListener('focusin', commentFieldFocusInHandler);
+    commentFieldElement.removeEventListener('focusout', commentFieldFocusOutHandler);
+
+    uploadFormSubmitElement.removeEventListener('click', window.formValidate.checkHashTags);
+    uploadFormElement.removeEventListener('submit', uploadFormSubmitHandler);
   };
 
   var submitFormSuccessHandler = function () {
@@ -61,52 +105,32 @@
     showFormError(errorMessage);
   };
 
+  var uploadFormSubmitHandler = function (evt) {
+    evt.preventDefault();
+    var formData = new FormData(uploadFormElement);
+    window.backend.save(formData, submitFormSuccessHandler, submitFormErrorHandler);
+  };
+
   var openEditForm = function () {
     uploadedFileEditFormElement.classList.remove('hidden');
-    uploadFormCloseElement.addEventListener('click', uploadFormCloseClickHandler);
-    uploadFormCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
-    document.addEventListener('keydown', popupEscClickHandler);
+
+    setupFormSpecificEvents();
 
     window.formFilter.init();
     window.formResize.init();
     window.notification.hideAll();
-
-    hashTagsInputElement.addEventListener('focusin', function () {
-      document.removeEventListener('keydown', popupEscClickHandler);
-    });
-
-    hashTagsInputElement.addEventListener('focusout', function () {
-      document.addEventListener('keydown', popupEscClickHandler);
-    });
-
-    commentFieldElement.addEventListener('focusin', function () {
-      document.removeEventListener('keydown', popupEscClickHandler);
-    });
-
-    commentFieldElement.addEventListener('focusout', function () {
-      document.addEventListener('keydown', popupEscClickHandler);
-    });
-
-    uploadFormSubmitElement.addEventListener('click', window.formValidate.checkHashTags);
-
-    uploadFormElement.addEventListener('submit', function (evt) {
-      evt.preventDefault();
-      var formData = new FormData(uploadFormElement);
-      window.backend.save(formData, submitFormSuccessHandler, submitFormErrorHandler);
-    });
-
   };
 
   var closeEditForm = function () {
+    uploadFormElement.reset();
     uploadFileElement.value = '';
     hashTagsInputElement.value = '';
     commentFieldElement.value = '';
+
     hideFormError();
+    destroyFormSpecificEvents();
 
     uploadedFileEditFormElement.classList.add('hidden');
-    uploadFormCloseElement.removeEventListener('click', uploadFormCloseClickHandler);
-    uploadFormCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
-    document.removeEventListener('keydown', popupEscClickHandler);
 
     window.formFilter.destroy();
     window.formResize.destroy();
