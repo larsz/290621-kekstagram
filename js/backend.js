@@ -2,10 +2,10 @@
 
 (function () {
 
+  var TIMEOUT = 10000;
+
   var SAVE_URL = 'https://js.dump.academy/kekstagram';
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
-
-  var TIMEOUT = 10000;
 
   var Code = {
     SUCCESS: 200,
