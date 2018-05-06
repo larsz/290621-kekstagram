@@ -5,6 +5,8 @@
   var SAVE_URL = 'https://js.dump.academy/kekstagram';
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
 
+  var TIMEOUT = 10000;
+
   var Code = {
     SUCCESS: 200,
     BAD_REQUEST: 400,
@@ -12,8 +14,6 @@
     NOT_FOUND: 404,
     SERVER_ERROR: 500
   };
-
-  var TIMEOUT = 10000;
 
   var initXHR = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
