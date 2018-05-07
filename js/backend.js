@@ -2,7 +2,7 @@
 
 (function () {
 
-  var TIMEOUT = 10000;
+  var REQUEST_TIMEOUT = 10000;
 
   var SAVE_URL = 'https://js.dump.academy/kekstagram';
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
@@ -46,7 +46,7 @@
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + TIMEOUT + ' мс');
+      onError('Запрос не успел выполниться за ' + REQUEST_TIMEOUT + ' мс');
     });
 
     return xhr;

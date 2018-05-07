@@ -2,7 +2,7 @@
 
 (function () {
 
-  var Effects = {
+  var Effect = {
     PREFIX_CLASS: 'effects__preview--',
     DEFAULT: 'none',
     PREVIEW_CLASS: 'img-upload__preview'
@@ -52,14 +52,14 @@
 
     toogleSlider(isSliderHidden);
     previewElement.removeAttribute('style');
-    previewElement.className = Effects.PREVIEW_CLASS + ' ' + Effects.PREFIX_CLASS + clickedFilterName;
+    previewElement.className = Effect.PREVIEW_CLASS + ' ' + Effect.PREFIX_CLASS + clickedFilterName;
     window.formResize.setDefault();
   };
 
   var applyFilter = function (intensity) {
     var selectedFilter = currentFilter.value;
-    var appliedEffectClassName = Effects.PREFIX_CLASS + selectedFilter;
-    previewElement.className = Effects.PREVIEW_CLASS + ' ' + appliedEffectClassName;
+    var appliedEffectClassName = Effect.PREFIX_CLASS + selectedFilter;
+    previewElement.className = Effect.PREVIEW_CLASS + ' ' + appliedEffectClassName;
 
     var selectedIntensity = intensity / 100;
 
@@ -90,7 +90,7 @@
 
   var destroyFilters = function () {
     var defaultFilterElement = effectsElement.querySelector('#effect-none');
-    previewElement.className = Effects.PREVIEW_CLASS;
+    previewElement.className = Effect.PREVIEW_CLASS;
     previewElement.removeAttribute('style');
     effectsElement.removeEventListener('change', effectsElementChangeHandler);
 
