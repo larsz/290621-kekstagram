@@ -5,7 +5,10 @@
   var Effect = {
     PREFIX_CLASS: 'effects__preview--',
     DEFAULT: 'none',
-    PREVIEW_CLASS: 'img-upload__preview'
+    PREVIEW_CLASS: 'img-upload__preview',
+    BLUR_RATIO: 3,
+    BRIGHTNESS_RATIO: 2,
+    BRIGHTNESS_MIN: 1
   };
 
   var wrapperElement;
@@ -68,8 +71,8 @@
       chrome: 'grayscale(' + selectedIntensity + ')',
       sepia: 'sepia(' + selectedIntensity + ')',
       marvin: 'invert(' + Math.round(selectedIntensity * 100) + '%)',
-      phobos: 'blur(' + selectedIntensity * 3 + 'px)',
-      heat: 'brightness(' + selectedIntensity * 3 + ')'
+      phobos: 'blur(' + selectedIntensity * Effect.BLUR_RATIO + 'px)',
+      heat: 'brightness(' + (selectedIntensity * Effect.BRIGHTNESS_RATIO + Effect.BRIGHTNESS_MIN) + ')'
     };
 
     previewElement.style.filter = filters[selectedFilter];

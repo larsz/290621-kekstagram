@@ -23,7 +23,7 @@
   var checkHashtagsValidity = function () {
     var data = hashTagsInputElement.value.toLowerCase();
 
-    if (data === '') {
+    if (!data) {
       clearHashtagsValidationError();
       return true;
     }
