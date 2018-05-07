@@ -51,7 +51,7 @@
     currentFilter = clickedFilter;
 
     toogleSlider(isSliderHidden);
-    previewElement.removeAttribute('style');
+    previewElement.style.cssText = null;
     previewElement.className = Effect.PREVIEW_CLASS + ' ' + Effect.PREFIX_CLASS + clickedFilterName;
     window.formResize.setDefault();
   };
@@ -91,7 +91,7 @@
   var destroyFilters = function () {
     var defaultFilterElement = effectsElement.querySelector('#effect-none');
     previewElement.className = Effect.PREVIEW_CLASS;
-    previewElement.removeAttribute('style');
+    previewElement.style.cssText = null;
     effectsElement.removeEventListener('change', effectsElementChangeHandler);
 
     resetRadios();
