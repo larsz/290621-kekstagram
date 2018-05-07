@@ -36,7 +36,6 @@
     return comments;
   };
 
-  // Render featured photo
   var renderFeaturedPhoto = function (featuredPhoto) {
     var img = featuredPhotoElement.querySelector('.big-picture__img img');
     var description = featuredPhotoElement.querySelector('.social__caption');

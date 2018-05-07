@@ -2,7 +2,6 @@
 
 (function () {
 
-  /* Upload photo & edit form controls */
   var uploadFormElement = document.querySelector('.img-upload__form');
   var uploadFileElement = uploadFormElement.querySelector('#upload-file');
 
