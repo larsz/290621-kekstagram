@@ -9,12 +9,3 @@
   padding-left: 10px;
   padding-right: 10px;
 }
-.scale__value {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-       appearance: none;
-  display: block;
-
-  opacity: 0;
-  position: absolute;
-}

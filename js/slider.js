@@ -19,7 +19,6 @@
     effectLevelLineElement = sliderElement.querySelector('.scale__line');
     effectLevelInputElement = sliderElement.querySelector('.scale__value');
     scaleLevelElement = effectLevelLineElement.querySelector('.scale__level');
-    effectLevelInputElement.type = 'text';
 
     isSliderCreated = true;
   };
@@ -83,7 +82,7 @@
       if (intensityLevel > 0 && intensityLevel <= 100) {
         sliderPinElement.style.left = intensityLevel + '%';
         scaleLevelElement.style.width = intensityLevel + '%';
-        effectLevelInputElement.value = intensityLevel;
+        effectLevelInputElement.value = Math.round(intensityLevel);
       }
 
       if (typeof callback === 'function') {
