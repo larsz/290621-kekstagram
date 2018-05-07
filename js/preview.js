@@ -11,6 +11,7 @@
     EXT: '.svg',
   };
 
+  var bodyElement = document.querySelector('body');
   var featuredPhotoElement = document.querySelector('.big-picture');
   var featuredPhotoCommentsElement = featuredPhotoElement.querySelector('.social__comment-count');
   var featuredPhotoLoadMoreElement = featuredPhotoElement.querySelector('.social__comment-loadmore');
@@ -60,7 +61,7 @@
     featuredPhotoCommentsElement.classList.add('visually-hidden');
     featuredPhotoLoadMoreElement.classList.add('visually-hidden');
     featuredPhotoElement.classList.remove('hidden');
-    document.querySelector('body').classList.add('modal-open');
+    bodyElement.classList.add('modal-open');
 
     featuredPhotoCloseElement.addEventListener('click', popupCloseClickHandler);
     featuredPhotoCloseElement.addEventListener('keydown', popupCloseKeyDownHandler);
@@ -69,7 +70,7 @@
 
   var closeFeaturedPhoto = function () {
     featuredPhotoElement.classList.add('hidden');
-    document.querySelector('body').classList.remove('modal-open');
+    bodyElement.classList.remove('modal-open');
 
     featuredPhotoCloseElement.removeEventListener('click', popupCloseClickHandler);
     featuredPhotoCloseElement.removeEventListener('keydown', popupCloseKeyDownHandler);
