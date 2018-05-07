@@ -13,20 +13,20 @@
   };
 
   var shuffleArray = function (arr) {
-    var result = [];
+    var shuffledItems = [];
     var i;
     var n = arr.length;
 
     while (n) {
       i = Math.floor(Math.random() * n--);
-      result.push(arr.splice(i, 1)[0]);
+      shuffledItems.push(arr.splice(i, 1)[0]);
     }
-    return result;
+    return shuffledItems;
   };
 
-  var removeChilds = function (element) {
-    while (element.firstChild) {
-      element.removeChild(element.firstChild);
+  var removeChildrens = function (parent) {
+    while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
     }
   };
 
@@ -45,7 +45,7 @@
   window.utils = {
     getRandomNumber: getRandomNumber,
     shuffleArray: shuffleArray,
-    removeChilds: removeChilds,
+    removeChildrens: removeChildrens,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     KeyCode: KeyCode

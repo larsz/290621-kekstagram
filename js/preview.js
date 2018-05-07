@@ -49,7 +49,7 @@
     likesCount.textContent = featuredPhoto.likes;
     commentsCount.textContent = featuredPhoto.comments.length;
 
-    window.utils.removeChilds(commentsTemplateElement);
+    window.utils.removeChildrens(commentsTemplateElement);
     commentsTemplateElement.appendChild(comments);
 
     return featuredPhoto;

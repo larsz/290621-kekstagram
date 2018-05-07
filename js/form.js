@@ -28,7 +28,7 @@
   };
 
   var hideFormError = function () {
-    window.utils.removeChilds(errorMessageElement);
+    window.utils.removeChildrens(errorMessageElement);
     errorMessageElement.classList.add('hidden');
   };
 
