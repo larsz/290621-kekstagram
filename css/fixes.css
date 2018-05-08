@@ -9,3 +9,8 @@
   padding-left: 10px;
   padding-right: 10px;
 }
+.img-upload__preview img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}

@@ -56,6 +56,7 @@
   };
 
   var showFeaturedPhoto = function (photo) {
+    window.notification.hideAll();
     renderFeaturedPhoto(photo);
 
     featuredPhotoCommentsElement.classList.add('visually-hidden');
