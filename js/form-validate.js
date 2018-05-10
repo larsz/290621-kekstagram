@@ -66,7 +66,8 @@
   };
 
   window.formValidate = {
-    checkHashTags: checkHashtagsValidity
+    checkHashTags: checkHashtagsValidity,
+    resetErrors: clearHashtagsValidationError
   };
 
 })();

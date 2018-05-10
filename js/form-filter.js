@@ -54,7 +54,10 @@
     currentFilter = clickedFilter;
 
     toogleSlider(isSliderHidden);
-    previewElement.style.cssText = null;
+
+    previewElement.style.filter = '';
+    previewElement.style.transform = '';
+
     previewElement.className = Effect.PREVIEW_CLASS + ' ' + Effect.PREFIX_CLASS + clickedFilterName;
     window.formResize.setDefault();
   };
@@ -94,7 +97,9 @@
   var destroyFilters = function () {
     var defaultFilterElement = effectsElement.querySelector('#effect-none');
     previewElement.className = Effect.PREVIEW_CLASS;
-    previewElement.style.cssText = null;
+    previewElement.style.filter = '';
+    previewElement.style.transform = '';
+
     effectsElement.removeEventListener('change', effectsElementChangeHandler);
 
     resetRadios();

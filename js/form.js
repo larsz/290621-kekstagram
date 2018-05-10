@@ -33,7 +33,7 @@
   };
 
   var hideFormError = function () {
-    window.utils.removeChildrens(errorMessageElement);
+    window.utils.removeChilds(errorMessageElement);
     errorMessageElement.classList.add('hidden');
   };
 
@@ -165,6 +165,7 @@
     commentFieldElement.value = '';
 
     hideFormError();
+    window.formValidate.resetErrors();
     destroyFormSpecificEvents();
 
     uploadedFileEditFormElement.classList.add('hidden');

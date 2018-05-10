@@ -24,9 +24,9 @@
     return shuffledItems;
   };
 
-  var removeChildrens = function (parent) {
-    while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
+  var removeChilds = function (element) {
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
     }
   };
 
@@ -45,7 +45,7 @@
   window.utils = {
     getRandomNumber: getRandomNumber,
     shuffleArray: shuffleArray,
-    removeChildrens: removeChildrens,
+    removeChilds: removeChilds,
     isEscEvent: isEscEvent,
     isEnterEvent: isEnterEvent,
     KeyCode: KeyCode
