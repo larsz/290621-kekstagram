@@ -44,6 +44,12 @@
     }
   };
 
+  var resetFilter = function (element) {
+    element.style.filter = '';
+    element.style.transform = '';
+
+  };
+
   var setCurrentFilter = function (evt) {
     var clickedFilter = evt.target;
     var clickedFilterName = clickedFilter.id.split('-').pop();
@@ -54,9 +60,7 @@
     currentFilter = clickedFilter;
 
     toogleSlider(isSliderHidden);
-
-    previewElement.style.filter = '';
-    previewElement.style.transform = '';
+    resetFilter(previewElement);
 
     previewElement.className = Effect.PREVIEW_CLASS + ' ' + Effect.PREFIX_CLASS + clickedFilterName;
     window.formResize.setDefault();
@@ -79,7 +83,6 @@
     };
 
     previewElement.style.filter = filters[selectedFilter];
-
   };
 
   var effectsElementChangeHandler = function (evt) {
@@ -97,8 +100,8 @@
   var destroyFilters = function () {
     var defaultFilterElement = effectsElement.querySelector('#effect-none');
     previewElement.className = Effect.PREVIEW_CLASS;
-    previewElement.style.filter = '';
-    previewElement.style.transform = '';
+
+    resetFilter(previewElement);
 
     effectsElement.removeEventListener('change', effectsElementChangeHandler);
 
