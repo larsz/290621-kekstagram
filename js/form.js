@@ -163,6 +163,7 @@
     uploadFileElement.value = '';
     hashTagsInputElement.value = '';
     commentFieldElement.value = '';
+    previewElement.src = '';
 
     hideFormError();
     window.formValidate.resetErrors();
