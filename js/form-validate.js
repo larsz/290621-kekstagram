@@ -23,7 +23,7 @@
   var checkHashtagsValidity = function () {
     var data = hashTagsInputElement.value.toLowerCase();
 
-    if (data === '') {
+    if (data.length === 0) {
       clearHashtagsValidationError();
       return true;
     }
@@ -66,7 +66,8 @@
   };
 
   window.formValidate = {
-    checkHashTags: checkHashtagsValidity
+    checkHashTags: checkHashtagsValidity,
+    resetErrors: clearHashtagsValidationError
   };
 
 })();

@@ -2,7 +2,7 @@
 
 (function () {
 
-  var TIMEOUT = 10000;
+  var REQUEST_TIMEOUT = 10000;
 
   var SAVE_URL = 'https://js.dump.academy/kekstagram';
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
@@ -15,51 +15,51 @@
     SERVER_ERROR: 500
   };
 
-  var initXHR = function (onLoad, onError) {
+  var initXHR = function (successLoadHandler, errorLoadHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case Code.SUCCESS:
-          onLoad(xhr.response);
+          successLoadHandler(xhr.response);
           break;
         case Code.BAD_REQUEST:
-          onError('Статус ответа: ' + xhr.status + '. В запросе синтаксическая ошибка.');
+          errorLoadHandler('Статус ответа: ' + xhr.status + '. В запросе синтаксическая ошибка.');
           break;
         case Code.FORBIDDEN:
-          onError('Статус ответа: ' + xhr.status + '. В запросе отказано, недостаточно прав.');
+          errorLoadHandler('Статус ответа: ' + xhr.status + '. В запросе отказано, недостаточно прав.');
           break;
         case Code.NOT_FOUND:
-          onError('Статус ответа: ' + xhr.status + '. Страница не найдена');
+          errorLoadHandler('Статус ответа: ' + xhr.status + '. Страница не найдена');
           break;
         case Code.SERVER_ERROR:
-          onError('Статус ответа: ' + xhr.status + '. Ой, неполадки на сервере, попробуйте чуть позже.');
+          errorLoadHandler('Статус ответа: ' + xhr.status + '. Ой, неполадки на сервере, попробуйте чуть позже.');
           break;
         default:
-          onError('Статус ответа: ' + xhr.status + '' + xhr.statusText);
+          errorLoadHandler('Статус ответа: ' + xhr.status + '' + xhr.statusText);
       }
     });
 
     xhr.addEventListener('error', function () {
-      onError('Ошибка соединения');
+      errorLoadHandler('Ошибка соединения');
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + TIMEOUT + ' мс');
+      errorLoadHandler('Запрос не успел выполниться за ' + REQUEST_TIMEOUT + ' мс');
     });
 
     return xhr;
   };
 
-  var load = function (onLoad, onError) {
-    var xhr = initXHR(onLoad, onError);
+  var load = function (successLoadHandler, errorLoadHandler) {
+    var xhr = initXHR(successLoadHandler, errorLoadHandler);
     xhr.open('GET', LOAD_URL);
     xhr.send();
   };
 
-  var save = function (data, onLoad, onError) {
-    var xhr = initXHR(onLoad, onError);
+  var save = function (data, successLoadHandler, errorLoadHandler) {
+    var xhr = initXHR(successLoadHandler, errorLoadHandler);
     xhr.open('POST', SAVE_URL);
     xhr.send(data);
   };

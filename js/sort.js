@@ -21,16 +21,14 @@
       return photos;
     },
     'filter-popular': function (data) {
-      data.sort(function (a, b) {
+      return data.sort(function (a, b) {
         return b.likes - a.likes;
       });
-      return data;
     },
     'filter-discussed': function (data) {
-      data.sort(function (a, b) {
+      return data.sort(function (a, b) {
         return b.comments.length - a.comments.length;
       });
-      return data;
     },
     'filter-random': function (data) {
       return window.utils.shuffleArray(data);

@@ -1,10 +1,8 @@
 'use strict';
 (function () {
 
-  // DOM elements
   var photoTemplateElement = document.querySelector('#picture');
 
-  // Render thumbnail
   var renderThumbnail = function (photo) {
     var clonedPhotoTemplate = photoTemplateElement.content.cloneNode(true);
     var clonedPhoto = clonedPhotoTemplate.querySelector('.picture__link');

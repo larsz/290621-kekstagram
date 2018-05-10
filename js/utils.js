@@ -13,15 +13,15 @@
   };
 
   var shuffleArray = function (arr) {
-    var result = [];
+    var shuffledItems = [];
     var i;
     var n = arr.length;
 
     while (n) {
       i = Math.floor(Math.random() * n--);
-      result.push(arr.splice(i, 1)[0]);
+      shuffledItems.push(arr.splice(i, 1)[0]);
     }
-    return result;
+    return shuffledItems;
   };
 
   var removeChilds = function (element) {
